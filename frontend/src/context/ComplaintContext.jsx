@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { getOfflineComplaints, removeOfflineComplaint, saveOfflineComplaint } from "../utils/offlineStore";
 
 const ComplaintContext = createContext(null);
 
@@ -42,16 +41,10 @@ export function ComplaintProvider({ children }) {
     };
   }, []);
 
-  useEffect(() => {
-    if (!isOnline) return;
-    getOfflineComplaints().then((complaints) => complaints.forEach((complaint) => removeOfflineComplaint(complaint.number)));
-  }, [isOnline]);
-
   const submitComplaint = async (formData, type) => {
     const complaint = { ...formData, type, number: createComplaintNumber(), submittedAt: new Date().toISOString(), status: "பரிசீலனையில் உள்ளது" };
     setCurrentComplaint(complaint);
     localStorage.setItem("current_complaint", JSON.stringify(complaint));
-    if (!navigator.onLine) await saveOfflineComplaint(complaint);
     return complaint;
   };
 
