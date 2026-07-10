@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --color-government-50: #eff9f2;
+  --color-government-100: #d8f1df;
+  --color-government-500: #128044;
+  --color-government-600: #096a35;
+  --color-government-700: #07552d;
+  --font-tamil: "Noto Sans Tamil", sans-serif;
+  --font-number: "Plus Jakarta Sans", "Noto Sans Tamil", sans-serif;
+}
+
+* { -webkit-tap-highlight-color: transparent; }
+
+html { background: #eef4ef; }
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: #eef4ef;
+  color: #183328;
+  font-family: "Noto Sans Tamil", sans-serif;
+}
+
+button, input, textarea { font: inherit; }
+button { cursor: pointer; }
+
+.app-canvas { min-height: 100dvh; background: #f7faf7; }
+
+@media (min-width: 550px) {
+  .app-canvas {
+    width: 390px;
+    min-height: 100dvh;
+    margin: 0 auto;
+    box-shadow: 0 0 0 1px rgba(10, 82, 44, 0.08), 0 22px 70px rgba(17, 61, 37, 0.14);
+  }
+}
+
+.page-enter { animation: page-enter 360ms ease-out both; }
+.float-gently { animation: float-gently 3.8s ease-in-out infinite; }
+.pulse-ring { animation: pulse-ring 2.2s ease-out infinite; }
+
+@keyframes page-enter {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes float-gently {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(18, 128, 68, 0.35); }
+  70% { box-shadow: 0 0 0 16px rgba(18, 128, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(18, 128, 68, 0); }
+}
+
+.Toastify__toast {
+  border-radius: 15px;
+  font-family: "Noto Sans Tamil", sans-serif;
+  font-size: 13px;
+  margin-inline: 12px;
+}

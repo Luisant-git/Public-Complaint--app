@@ -1,0 +1,13 @@
+import { Bell, CircleUserRound, House, MapPinned } from "lucide-react";
+import { NavLink } from "react-router-dom";
+
+const items = [
+  { to: "/dashboard", label: "முகப்பு", Icon: House },
+  { to: "/status", label: "குறை நிலை", Icon: MapPinned },
+  { to: "/notifications", label: "அறிவிப்புகள்", Icon: Bell },
+  { to: "/profile", label: "சுயவிவரம்", Icon: CircleUserRound },
+];
+
+export function BottomNavigation() {
+  return <nav className="fixed bottom-0 left-0 right-0 z-30 mx-auto flex h-[72px] max-w-[390px] items-center justify-around border-t border-slate-100 bg-white/95 px-2 pb-[max(0px,env(safe-area-inset-bottom))] backdrop-blur">{items.map(({ to, label, Icon }) => <NavLink key={to} to={to} className={({ isActive }) => `flex min-w-[66px] flex-col items-center gap-1 py-2 text-[10px] font-bold transition ${isActive ? "text-government-600" : "text-slate-400"}`}>{({ isActive }) => <><span className={`grid h-7 w-10 place-items-center rounded-full ${isActive ? "bg-government-50" : ""}`}><Icon className="h-[19px] w-[19px]" strokeWidth={isActive ? 2.7 : 2} /></span><span>{label}</span></>}</NavLink>)}</nav>;
+}

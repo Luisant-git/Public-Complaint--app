@@ -1,0 +1,3 @@
+export function EmptyState({ icon: Icon, title, detail }) {
+  return <div className="px-5 py-16 text-center"><div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-government-50 text-government-600"><Icon className="h-7 w-7" /></div><p className="mt-4 text-base font-extrabold text-slate-800">{title}</p><p className="mx-auto mt-2 max-w-[245px] text-xs leading-5 text-slate-500">{detail}</p></div>;
+}
