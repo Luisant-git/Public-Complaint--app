@@ -90,7 +90,7 @@ export function ComplaintSuccessPage() {
   };
 
   return <main className="min-h-dvh bg-white px-6 pb-8 pt-16 text-center"><div className="page-enter"><div className="pulse-ring mx-auto grid h-24 w-24 place-items-center rounded-full bg-government-600 text-white"><Check className="h-12 w-12" strokeWidth={3} /></div><p className="mt-10 text-sm font-bold text-government-600">வெற்றி!</p><h1 className="mt-2 text-2xl font-extrabold leading-relaxed text-slate-800">உங்கள் குறை வெற்றிகரமாக<br />பதிவேற்றப்பட்டது</h1><p className="mx-auto mt-3 max-w-[275px] text-xs leading-6 text-slate-500">குறையின் நிலையை அறிய இந்த குறை எண்ணை பாதுகாப்பாக வைத்துக்கொள்ளவும்.</p>
-    <div className="mt-8 rounded-2xl border border-government-100 bg-government-50 px-4 py-4"><p className="text-[11px] font-bold text-government-700">குறை எண்</p><p className="font-number mt-2 text-[17px] font-extrabold tracking-wide text-government-700">{complaintNumber}</p></div>
+    <div className="mt-8 rounded-2xl border border-[#ffe7ad] bg-[#fff7e8] px-4 py-4"><p className="text-[11px] font-bold text-[#7a0000]">குறை எண்</p><p className="font-number mt-2 text-[17px] font-extrabold tracking-wide text-[#9f0100]">{complaintNumber}</p></div>
     <div className="mt-3 grid grid-cols-2 gap-3"><Button variant="outline" onClick={copyNumber}><Clipboard className="h-4 w-4" />நகலெடுக்க</Button><Button variant="outline" onClick={downloadReceipt}><Download className="h-4 w-4" />பதிவிறக்க</Button></div>
     <Button className="mt-7 w-full" onClick={() => navigate("/dashboard")}><House className="h-4 w-4" />முகப்புக்கு செல்க</Button></div></main>;
 }

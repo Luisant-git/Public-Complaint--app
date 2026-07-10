@@ -12,7 +12,7 @@ export function ProfilePage() {
   const [showLogout, setShowLogout] = useState(false);
   const storedName = localStorage.getItem("user_name")?.trim();
   const storedMobile = localStorage.getItem("user_mobile")?.trim();
-  const userName = userProfile?.name?.trim() || storedName || "கண்ணன்";
+  const userName = userProfile?.name?.trim() || storedName || "பயனர்";
   const userMobile = userProfile?.mobile?.trim() || storedMobile || "—";
   const userInitial = (userName || "U").charAt(0);
 

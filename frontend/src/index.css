@@ -3,11 +3,11 @@
 @import "tailwindcss";
 
 @theme {
-  --color-government-50: #eff9f2;
-  --color-government-100: #d8f1df;
-  --color-government-500: #128044;
-  --color-government-600: #096a35;
-  --color-government-700: #07552d;
+  --color-government-50: #fff7e8;
+  --color-government-100: #ffe7ad;
+  --color-government-500: #9f0100;
+  --color-government-600: #9f0100;
+  --color-government-700: #7a0000;
   --font-tamil: "Noto Sans Tamil", sans-serif;
   --font-number: "Plus Jakarta Sans", "Noto Sans Tamil", sans-serif;
 }
