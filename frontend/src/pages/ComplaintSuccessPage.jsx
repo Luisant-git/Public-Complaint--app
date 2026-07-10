@@ -5,11 +5,21 @@ import { toast } from "react-toastify";
 import { Button } from "../components/Button";
 import { useComplaint } from "../context/ComplaintContext";
 
+const arrayBufferToBase64 = (buffer) => {
+  let binary = "";
+  const bytes = new Uint8Array(buffer);
+  const chunkSize = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunkSize));
+  }
+  return window.btoa(binary);
+};
+
 export function ComplaintSuccessPage() {
   const navigate = useNavigate();
   const { number } = useParams();
   const { currentComplaint } = useComplaint();
-  const complaintNumber = currentComplaint?.number || number;
+  const complaintNumber = currentComplaint?.number || number || "பதிவு எண் கிடையாது";
 
   const copyNumber = async () => {
     try {
@@ -20,9 +30,17 @@ export function ComplaintSuccessPage() {
     }
   };
 
-  const downloadReceipt = () => {
+  const downloadReceipt = async () => {
+    const fontPath = "/fonts/NotoSansTamil-Regular.ttf";
+    const buffer = await fetch(fontPath).then((response) => response.arrayBuffer());
+    const fontBase64 = arrayBufferToBase64(buffer);
     const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a5" });
     const pageWidth = doc.internal.pageSize.getWidth();
+
+    // Register and set Tamil font
+    doc.addFileToVFS("NotoSansTamil.ttf", fontBase64);
+    doc.addFont("NotoSansTamil.ttf", "NotoSansTamil", "normal");
+    doc.setFont("NotoSansTamil");
 
     // Header
     doc.setFillColor(9, 106, 53);
@@ -46,9 +64,9 @@ export function ComplaintSuccessPage() {
     doc.setTextColor(50, 50, 50);
     doc.setFontSize(11);
     const details = [
-      { label: "குறை எண்", value: complaintNumber },
-      { label: "குறை வகை", value: currentComplaint?.type || "-" },
-      { label: "பதிவு நேரம்", value: new Date(currentComplaint?.submittedAt || Date.now()).toLocaleString("ta-IN") },
+      { label: "குறை எண்", value: String(complaintNumber || "-") },
+      { label: "குறை வகை", value: String(currentComplaint?.type || "-") },
+      { label: "பதிவு நேரம்", value: String(new Date(currentComplaint?.submittedAt || Date.now()).toLocaleString("ta-IN")) },
     ];
     let y = 68;
     details.forEach(({ label, value }) => {
@@ -57,8 +75,9 @@ export function ComplaintSuccessPage() {
       doc.text(label, 15, y);
       doc.setFontSize(11);
       doc.setTextColor(50, 50, 50);
-      doc.text(value, 15, y + 6);
-      y += 18;
+      const lines = doc.splitTextToSize(value, pageWidth - 30);
+      doc.text(lines, 15, y + 6);
+      y += 6 * lines.length + 18;
     });
 
     // Footer
