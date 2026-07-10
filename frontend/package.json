@@ -11,6 +11,7 @@
   "dependencies": {
     "@fontsource/noto-sans-tamil": "^5.2.7",
     "clsx": "2.1.1",
+    "html2canvas": "^1.4.1",
     "jspdf": "^4.2.1",
     "localforage": "^1.10.0",
     "lucide-react": "^1.24.0",

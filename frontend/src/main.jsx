@@ -5,8 +5,11 @@ import "./index.css";
 import "react-toastify/dist/ReactToastify.css";
 import App from "./App";
 
+// Unregister any previously installed service workers so cached files don't interfere
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => navigator.serviceWorker.register("/service-worker.js"));
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    registrations.forEach((reg) => reg.unregister());
+  });
 }
 
 createRoot(document.getElementById("root")).render(
