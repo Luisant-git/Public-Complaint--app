@@ -12,9 +12,16 @@
   --font-number: "Plus Jakarta Sans", "Noto Sans Tamil", sans-serif;
 }
 
-* { -webkit-tap-highlight-color: transparent; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
 
-html { background: #eef4ef; }
+html {
+  background: #eef4ef;
+}
 
 body {
   margin: 0;
@@ -24,16 +31,28 @@ body {
   font-family: "Noto Sans Tamil", sans-serif;
 }
 
-button, input, textarea { font: inherit; }
-button { cursor: pointer; }
+button, input, textarea {
+  font: inherit;
+}
+button {
+  cursor: pointer;
+}
 
-.app-canvas { min-height: 100dvh; background: #f7faf7; }
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.app-canvas {
+  width: min(100%, 390px);
+  min-height: 100dvh;
+  margin: 0 auto;
+  background: #f7faf7;
+}
 
 @media (min-width: 550px) {
   .app-canvas {
-    width: 390px;
-    min-height: 100dvh;
-    margin: 0 auto;
     box-shadow: 0 0 0 1px rgba(10, 82, 44, 0.08), 0 22px 70px rgba(17, 61, 37, 0.14);
   }
 }

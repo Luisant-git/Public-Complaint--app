@@ -12,10 +12,10 @@ export function SplashPage() {
 
   return (
     <div className="app-canvas">
-      <main className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-6 text-center text-white bg-government-700">
-        <div className="absolute -left-16 top-12 h-44 w-44 rounded-full bg-black/15 md:h-48 md:w-48" />
-        <div className="absolute -right-16 bottom-10 h-56 w-56 rounded-full bg-lime-300/20" />
-        <div className="relative float-gently max-w-[420px] px-4">
+      <main className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden px-4 text-center text-white bg-government-700">
+        <div className="absolute -left-10 top-12 h-40 w-40 rounded-full bg-black/15 md:-left-16 md:h-48 md:w-48" />
+        <div className="absolute -right-10 bottom-10 h-48 w-48 rounded-full bg-lime-300/20 md:-right-16 md:h-56 md:w-56" />
+        <div className="relative float-gently w-full max-w-full px-4 md:max-w-[420px]">
           <div className="mx-auto grid h-20 w-20 place-items-center rounded-[28px] bg-white text-government-700 shadow-[0_18px_40px_rgba(0,0,0,0.22)]"><Megaphone className="h-10 w-10" strokeWidth={2.3} /></div>
           <div className="mt-7">
             <div className="flex items-center justify-center gap-2 text-sm font-extrabold text-white">
