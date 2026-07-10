@@ -36,7 +36,7 @@ export function ComplaintFormPage() {
         <span className="mb-2 block text-[13px] font-bold text-slate-700">இடம்</span>
         <input
           type="text"
-          placeholder="உங்கள் குறை பதிவு செய்யும் இடத்தைப் பதிவு செய்யவும்"
+          placeholder="உங்கள் குறை பதிவு செய்யும் இடம்"
           className={`w-full rounded-xl border bg-white px-3.5 py-3 text-sm font-medium text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-government-500 focus:ring-4 focus:ring-government-100 ${errors.place ? "border-rose-400" : "border-slate-200"}`}
           {...register("place", { required: "இடத்தை உள்ளிடவும்." })}
         />

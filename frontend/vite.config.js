@@ -3,6 +3,7 @@ import { fileURLToPath } from "url";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import { VitePWA } from "vite-plugin-pwa";
 import { viteSingleFile } from "vite-plugin-singlefile";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -10,7 +11,36 @@ const __dirname = path.dirname(__filename);
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), viteSingleFile()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    viteSingleFile(),
+    VitePWA({
+      registerType: "autoUpdate",
+      devOptions: {
+        enabled: true,
+      },
+      includeAssets: ["icons/app-icon.svg"],
+      manifest: {
+        name: "குறை தீர்க்கும் பயண்பாடு",
+        short_name: "குறை தீர்வு",
+        description: "மக்கள் குறைகளை பதிவு செய்து அதன் நிலையை அறியும் செயலி.",
+        lang: "ta",
+        start_url: "/",
+        display: "standalone",
+        background_color: "#f7faf7",
+        theme_color: "9f0100",
+        icons: [
+          {
+            src: "/icons/app-icon.svg",
+            sizes: "any",
+            type: "image/svg+xml",
+            purpose: "any maskable",
+          },
+        ],
+      },
+    }),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),

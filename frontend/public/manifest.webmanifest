@@ -1,0 +1,20 @@
+{
+  "name": "குறை தீர்க்கும் பயணபாடு",
+  "short_name": "குறை தீர்வு",
+  "description": "மக்கள் குறைகளை பதிவு செய்து அதன் நிலையை அறியும் செயலி.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "lang": "ta",
+  "background_color": "#f7faf7",
+  "theme_color": "#096a35",
+  "icons": [
+    {
+      "src": "/icons/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
