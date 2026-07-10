@@ -4,18 +4,21 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
 import { Header } from "../components/Header";
 import { Modal } from "../components/Modal";
+import { useComplaint } from "../context/ComplaintContext";
 
 export function ProfilePage() {
   const navigate = useNavigate();
+  const { userProfile, clearUserProfile } = useComplaint();
   const [showLogout, setShowLogout] = useState(false);
-  const userName = localStorage.getItem("user_name") || "கண்ணன்";
-  const userMobile = localStorage.getItem("user_mobile") || "98765 43210";
-  const userInitial = userName.charAt(0);
+  const storedName = localStorage.getItem("user_name")?.trim();
+  const storedMobile = localStorage.getItem("user_mobile")?.trim();
+  const userName = userProfile?.name?.trim() || storedName || "கண்ணன்";
+  const userMobile = userProfile?.mobile?.trim() || storedMobile || "—";
+  const userInitial = (userName || "U").charAt(0);
 
   const logout = () => {
     localStorage.removeItem("complaint_token");
-    localStorage.removeItem("user_name");
-    localStorage.removeItem("user_mobile");
+    clearUserProfile();
     setShowLogout(false);
     navigate("/login", { replace: true });
   };

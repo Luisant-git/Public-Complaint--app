@@ -9,12 +9,28 @@ function createComplaintNumber() {
   return `CMP${datePart}${Math.floor(1000 + Math.random() * 9000)}`;
 }
 
+function getStoredUserProfile() {
+  if (typeof window === "undefined") return null;
+  const name = window.localStorage.getItem("user_name") || "";
+  const mobile = window.localStorage.getItem("user_mobile") || "";
+  if (!name && !mobile) return null;
+  return { name, mobile };
+}
+
 export function ComplaintProvider({ children }) {
   const [currentComplaint, setCurrentComplaint] = useState(() => {
     const saved = localStorage.getItem("current_complaint");
     return saved ? JSON.parse(saved) : null;
   });
+  const [userProfile, setUserProfileState] = useState(() => getStoredUserProfile());
   const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  useEffect(() => {
+    const stored = getStoredUserProfile();
+    if (!userProfile && stored) {
+      setUserProfileState(stored);
+    }
+  }, [userProfile]);
 
   useEffect(() => {
     const updateStatus = () => setIsOnline(navigator.onLine);
@@ -39,7 +55,33 @@ export function ComplaintProvider({ children }) {
     return complaint;
   };
 
-  const value = useMemo(() => ({ currentComplaint, submitComplaint, isOnline }), [currentComplaint, isOnline]);
+  const setUserProfile = (profile) => {
+    const nextProfile = {
+      name: profile?.name || "",
+      mobile: profile?.mobile || "",
+    };
+
+    setUserProfileState(nextProfile.name || nextProfile.mobile ? nextProfile : null);
+
+    if (!window.localStorage) return;
+    if (nextProfile.name || nextProfile.mobile) {
+      window.localStorage.setItem("user_name", nextProfile.name);
+      window.localStorage.setItem("user_mobile", nextProfile.mobile);
+    } else {
+      window.localStorage.removeItem("user_name");
+      window.localStorage.removeItem("user_mobile");
+    }
+  };
+
+  const clearUserProfile = () => {
+    setUserProfileState(null);
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem("user_name");
+      window.localStorage.removeItem("user_mobile");
+    }
+  };
+
+  const value = useMemo(() => ({ currentComplaint, submitComplaint, isOnline, userProfile, setUserProfile, clearUserProfile }), [currentComplaint, isOnline, userProfile]);
   return <ComplaintContext.Provider value={value}>{children}</ComplaintContext.Provider>;
 }
 

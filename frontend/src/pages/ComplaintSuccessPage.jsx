@@ -29,7 +29,7 @@ export function ComplaintSuccessPage() {
     doc.rect(0, 0, pageWidth, 35, "F");
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(16);
-    doc.text("குறை தீர்க்கும் பயணபாடு", pageWidth / 2, 16, { align: "center" });
+    doc.text("குறை தீர்க்கும் பயண்பாடு", pageWidth / 2, 16, { align: "center" });
     doc.setFontSize(10);
     doc.text("தமிழ்நாடு அரசு", pageWidth / 2, 26, { align: "center" });
 
@@ -48,7 +48,6 @@ export function ComplaintSuccessPage() {
     const details = [
       { label: "குறை எண்", value: complaintNumber },
       { label: "குறை வகை", value: currentComplaint?.type || "-" },
-      { label: "கிராமம் / வார்டு", value: currentComplaint?.village || "-" },
       { label: "பதிவு நேரம்", value: new Date(currentComplaint?.submittedAt || Date.now()).toLocaleString("ta-IN") },
     ];
     let y = 68;
