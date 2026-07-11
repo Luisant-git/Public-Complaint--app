@@ -10,6 +10,7 @@ import { LoadingSpinner } from "../components/LoadingSpinner";
 import { useComplaint } from "../context/ComplaintContext";
 import { complaintTypes } from "../data/complaints";
 
+import { uploadImage } from "../api/upload";
 export function ComplaintFormPage() {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -23,7 +24,11 @@ export function ComplaintFormPage() {
   const onSubmit = async (values) => {
     setIsSubmitting(true);
     await new Promise((resolve) => setTimeout(resolve, 600));
-    const complaint = await submitComplaint({ ...values, images: images.map((image) => image.url) }, type.name);
+    // Upload local image files to backend and get URLs
+    const uploadedUrls = await Promise.all(
+      images.map((img) => uploadImage(img.file))
+    );
+    const complaint = await submitComplaint({ ...values, images: uploadedUrls }, type.name);
     setIsSubmitting(false);
     toast.success(isOnline ? "உங்கள் குறை பதிவு செய்யப்பட்டது." : "இணையம் கிடைத்ததும் குறை அனுப்பப்படும்.");
     navigate(`/success/${complaint.number}`, { replace: true });

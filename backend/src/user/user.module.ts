@@ -2,10 +2,10 @@
 import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
-import { WhatsappModule } from '../whatsapp/whatsapp.module';
+import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
-  imports: [WhatsappModule],
+  imports: [PrismaModule],
   providers: [UserService],
   controllers: [UserController],
   exports: [UserService],

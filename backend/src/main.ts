@@ -25,8 +25,8 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('Metrohomes API')
-    .setDescription('Real Estate Management System API')
+    .setTitle('குறை மேலாண்மை API')
+    .setDescription('Complaint Management System API')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
@@ -36,7 +36,7 @@ async function bootstrap() {
 
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
-  console.log(`🚀 Metrohomes server running on http://localhost:${port}`);
+  console.log(`🚀 குறை மேலாண்மை server running on http://localhost:${port}`);
   console.log(`📚 Swagger UI: http://localhost:${port}/api/docs`);
 }
 bootstrap();

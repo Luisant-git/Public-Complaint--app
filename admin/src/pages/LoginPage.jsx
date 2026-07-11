@@ -15,12 +15,12 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      const result = login(email, password);
+      const result = await login(email, password);
       if (result.success) {
         toast.success(`வரவேற்கிறோம், ${result.user.name}!`);
         setTimeout(() => window.location.reload(), 800);
       } else {
-        toast.error("மின்னஞ்சல் அல்லது கடவுச்சொல் தவறானது");
+        toast.error(result.error || "மின்னஞ்சல் அல்லது கடவுச்சொல் தவறானது");
       }
     } catch (err) {
       toast.error("உள்நுழைவு தோல்வியடைந்தது. மீண்டும் முயற்சிக்கவும்.");

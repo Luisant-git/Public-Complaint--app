@@ -36,12 +36,12 @@ export const auth = {
     return handleResponse(response);
   },
 
-  // Login with identifier (employeeCode, email, or mobile)
-  async login(identifier, pin) {
-    const response = await fetch(`${VITE_API_URL}/auth/login`, {
+  // Login with email and password
+  async login(email, password) {
+    const response = await fetch(`${VITE_API_URL}/auth/admin/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ identifier, pin }),
+      body: JSON.stringify({ email, password }),
     });
 
     const data = await handleResponse(response);

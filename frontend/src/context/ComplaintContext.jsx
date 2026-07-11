@@ -1,12 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { complaintsApi } from "../api/complaints";
 
 const ComplaintContext = createContext(null);
-
-function createComplaintNumber() {
-  const now = new Date();
-  const datePart = [now.getFullYear(), String(now.getMonth() + 1).padStart(2, "0"), String(now.getDate()).padStart(2, "0")].join("");
-  return `CMP${datePart}${Math.floor(1000 + Math.random() * 9000)}`;
-}
 
 function getStoredUserProfile() {
   if (typeof window === "undefined") return null;
@@ -41,11 +36,30 @@ export function ComplaintProvider({ children }) {
     };
   }, []);
 
+  /** Submit a complaint via the real API */
   const submitComplaint = async (formData, type) => {
-    const complaint = { ...formData, type, number: createComplaintNumber(), submittedAt: new Date().toISOString(), status: "பரிசீலனையில் உள்ளது" };
-    setCurrentComplaint(complaint);
-    localStorage.setItem("current_complaint", JSON.stringify(complaint));
-    return complaint;
+    const payload = {
+      type,
+      location: formData.place,
+      description: formData.remarks,
+      images: formData.images || [],
+    };
+
+    const complaint = await complaintsApi.submit(payload);
+
+    // Store the complaint locally so status page can show it
+    const local = {
+      id: complaint.id,
+      number: complaint.number,
+      type: complaint.type,
+      location: complaint.location,
+      description: complaint.description,
+      status: complaint.status,
+      submittedAt: complaint.createdAt,
+    };
+    setCurrentComplaint(local);
+    localStorage.setItem("current_complaint", JSON.stringify(local));
+    return local;
   };
 
   const setUserProfile = (profile) => {
@@ -71,10 +85,17 @@ export function ComplaintProvider({ children }) {
     if (typeof window !== "undefined") {
       window.localStorage.removeItem("user_name");
       window.localStorage.removeItem("user_mobile");
+      window.localStorage.removeItem("user_id");
+      window.localStorage.removeItem("complaint_token");
+      window.localStorage.removeItem("current_complaint");
     }
   };
 
-  const value = useMemo(() => ({ currentComplaint, submitComplaint, isOnline, userProfile, setUserProfile, clearUserProfile }), [currentComplaint, isOnline, userProfile]);
+  const value = useMemo(
+    () => ({ currentComplaint, submitComplaint, isOnline, userProfile, setUserProfile, clearUserProfile }),
+    [currentComplaint, isOnline, userProfile]
+  );
+
   return <ComplaintContext.Provider value={value}>{children}</ComplaintContext.Provider>;
 }
 

@@ -1,5 +1,5 @@
 // src/auth/dto/register.dto.ts
-import { IsString, IsEmail, Length, Matches, IsNotEmpty } from 'class-validator';
+import { IsString, IsEmail, Length, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class RegisterDto {
@@ -14,29 +14,18 @@ export class RegisterDto {
 
   @ApiProperty({
     description: 'Email address of the admin',
-    example: 'admin@metrohomes.com',
+    example: 'admin@complaint.gov',
   })
   @IsEmail()
   @IsNotEmpty()
   email: string;
 
   @ApiProperty({
-    description: 'Mobile number (10 digits)',
-    example: '9999999999',
+    description: 'Password for admin login',
+    example: '123456',
   })
   @IsString()
   @IsNotEmpty()
-  @Length(10, 10)
-  @Matches(/^[0-9]{10}$/, { message: 'Mobile must be exactly 10 digits' })
-  mobile: string;
-
-  @ApiProperty({
-    description: '4-digit PIN for admin login',
-    example: '1234',
-  })
-  @IsString()
-  @IsNotEmpty()
-  @Length(4, 4)
-  @Matches(/^[0-9]{4}$/, { message: 'PIN must be exactly 4 digits' })
-  pin: string;
+  @Length(4, 20)
+  password: string;
 }

@@ -1,20 +1,12 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Search, Eye, Edit3, CheckCircle, Clock, AlertTriangle, MessageSquare, Phone, User, Save } from "lucide-react";
-
-const MOCK_COMPLAINTS = [
-  { id: 1, number: "CMP202607111234", name: "Ramesh Kumar", mobile: "9876543210", type: "Water Supply", description: "No water supply in our area for the past 3 days", submittedAt: "2026-07-11T09:30:00", status: "பரிசீலனையில் உள்ளது", assignedTo: null, remarks: "" },
-  { id: 2, number: "CMP202607115678", name: "Sita Devi", mobile: "9876543211", type: "Road Damage", description: "Main road has large potholes causing accidents", submittedAt: "2026-07-11T10:15:00", status: "பரிசீலனையில் உள்ளது", assignedTo: null, remarks: "" },
-  { id: 3, number: "CMP202607109012", name: "Amit Singh", mobile: "9876543212", type: "Garbage Collection", description: "Garbage not collected for 2 weeks, foul smell", submittedAt: "2026-07-10T14:20:00", status: "நடவடிக்கை எடுக்கப்பட்டது", assignedTo: "Arjun Mehta", remarks: "Team dispatched for cleaning" },
-  { id: 4, number: "CMP202607103456", name: "Priya Sharma", mobile: "9876543213", type: "Street Light", description: "Street lights not working on main road since a week", submittedAt: "2026-07-10T08:45:00", status: "தீர்க்கப்பட்டது", assignedTo: "Arjun Mehta", remarks: "All lights repaired and working" },
-  { id: 5, number: "CMP202607097890", name: "Vikram Patel", mobile: "9876543214", type: "Drainage", description: "Drainage blocked causing water logging", submittedAt: "2026-07-09T16:00:00", status: "நடவடிக்கை எடுக்கப்பட்டது", assignedTo: "Arjun Mehta", remarks: "Cleaning in progress" },
-  { id: 6, number: "CMP202607082345", name: "Neha Gupta", mobile: "9876543215", type: "Water Supply", description: "Low water pressure in the entire colony", submittedAt: "2026-07-08T11:30:00", status: "தீர்க்கப்பட்டது", assignedTo: "Arjun Mehta", remarks: "Pressure issue resolved" },
-  { id: 7, number: "CMP202607086789", name: "Rajesh Verma", mobile: "9876543216", type: "Noise Complaint", description: "Construction noise after 10 PM every night", submittedAt: "2026-07-08T22:15:00", status: "பரிசீலனையில் உள்ளது", assignedTo: null, remarks: "" },
-  { id: 8, number: "CMP202607071234", name: "Anita Joshi", mobile: "9876543217", type: "Road Damage", description: "Footpath broken and unsafe for pedestrians", submittedAt: "2026-07-07T13:00:00", status: "தீர்க்கப்பட்டது", assignedTo: "Arjun Mehta", remarks: "Footpath repaired" },
-];
+import { complaintsApi } from "../api/complaints.js";
+import { useAuth } from "../context/AuthContext.jsx";
+import { toast } from "react-toastify";
 
 const STATUS_STYLES = {
   "பரிசீலனையில் உள்ளது": { bg: "bg-amber-50", text: "text-amber-700", dot: "bg-amber-400", icon: Clock, taLabel: "பரிசீலனையில்" },
-  "நடவடிக்கை எடுக்கப்பட்டது": { bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-400", icon: AlertTriangle, taLabel: "நடவடிக்கை எடுக்கப்பட்டது" },
+  "நடவடிக்கை எடுக்கப்பட்டது": { bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-400", icon: AlertTriangle, taLabel: "நடவடிக்கை" },
   "தீர்க்கப்பட்டது": { bg: "bg-emerald-50", text: "text-emerald-700", dot: "bg-emerald-400", icon: CheckCircle, taLabel: "தீர்க்கப்பட்டது" },
 };
 
@@ -33,45 +25,70 @@ function StatusBadge({ status }) {
 }
 
 export default function ComplaintManagement() {
+  const { user } = useAuth();
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
-  const [complaints, setComplaints] = useState(MOCK_COMPLAINTS);
+  const [complaints, setComplaints] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [viewComplaint, setViewComplaint] = useState(null);
+  const [galleryOpen, setGalleryOpen] = useState(false);
+  const [galleryIndex, setGalleryIndex] = useState(0);
   const [editComplaint, setEditComplaint] = useState(null);
   const [editStatus, setEditStatus] = useState("");
   const [editRemarks, setEditRemarks] = useState("");
 
-  const filteredComplaints = useMemo(() => {
-    return complaints.filter(c => {
-      const matchesSearch = !search || 
-        c.number.toLowerCase().includes(search.toLowerCase()) ||
-        c.name.toLowerCase().includes(search.toLowerCase()) ||
-        c.mobile.includes(search);
-      const matchesType = typeFilter === "All" || c.type === typeFilter;
-      const matchesStatus = statusFilter === "All" || c.status === statusFilter;
-      return matchesSearch && matchesType && matchesStatus;
-    });
-  }, [complaints, search, typeFilter, statusFilter]);
+  const loadComplaints = async () => {
+    try {
+      setLoading(true);
+      const data = await complaintsApi.getComplaints({
+        status: statusFilter,
+        type: typeFilter,
+        search: search,
+      });
+      setComplaints(data);
+    } catch (err) {
+      toast.error("குறைகளை ஏற்றுவதில் பிழை ஏற்பட்டது.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  const stats = useMemo(() => ({
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      loadComplaints();
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [search, typeFilter, statusFilter]);
+
+  const stats = {
     total: complaints.length,
     pending: complaints.filter(c => c.status === "பரிசீலனையில் உள்ளது").length,
     action: complaints.filter(c => c.status === "நடவடிக்கை எடுக்கப்பட்டது").length,
     resolved: complaints.filter(c => c.status === "தீர்க்கப்பட்டது").length,
-  }), [complaints]);
+  };
 
   const openEdit = (complaint) => {
     setEditComplaint(complaint);
     setEditStatus(complaint.status);
-    setEditRemarks(complaint.remarks);
+    setEditRemarks(complaint.remarks || "");
   };
 
-  const saveEdit = () => {
-    setComplaints(prev => prev.map(c => 
-      c.id === editComplaint.id ? { ...c, status: editStatus, remarks: editRemarks, assignedTo: "Arjun Mehta" } : c
-    ));
-    setEditComplaint(null);
+  const saveEdit = async () => {
+    try {
+      const assignedToName = user?.name || "Admin Staff";
+      await complaintsApi.updateComplaint(editComplaint.id, {
+        status: editStatus,
+        remarks: editRemarks,
+        assignedTo: assignedToName,
+      });
+      toast.success("மாற்றங்கள் சேமிக்கப்பட்டன.");
+      setEditComplaint(null);
+      loadComplaints();
+    } catch (err) {
+      toast.error("மாற்றங்களை சேமிப்பதில் பிழை ஏற்பட்டது.");
+    }
   };
 
   return (
@@ -124,50 +141,60 @@ export default function ComplaintManagement() {
 
       {/* Table */}
       <div className="rounded-2xl bg-white border shadow-sm overflow-hidden" style={{ borderColor: "#e5e7eb" }}>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b" style={{ borderColor: "#e5e7eb", backgroundColor: "#eef4fa" }}>
-                <th className="text-left px-4 py-3 font-semibold text-xs" style={{ color: "#1D6FB9" }}>குறை எண்</th>
-                <th className="text-left px-4 py-3 font-semibold text-xs" style={{ color: "#1D6FB9" }}>பெயர்</th>
-                <th className="text-left px-4 py-3 font-semibold text-xs" style={{ color: "#1D6FB9" }}>வகை</th>
-                <th className="text-left px-4 py-3 font-semibold text-xs" style={{ color: "#1D6FB9" }}>தேதி</th>
-                <th className="text-left px-4 py-3 font-semibold text-xs" style={{ color: "#1D6FB9" }}>நிலை</th>
-                <th className="text-right px-4 py-3 font-semibold text-xs" style={{ color: "#1D6FB9" }}>செயல்கள்</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredComplaints.length === 0 ? (
-                <tr><td colSpan={6} className="text-center py-12 text-gray-400">குறைகள் எதுவும் இல்லை</td></tr>
-              ) : (
-                filteredComplaints.map((complaint) => (
-                  <tr key={complaint.id} className="border-b hover:bg-[#eef4fa]/30 transition-colors" style={{ borderColor: "#e5e7eb" }}>
-                    <td className="px-4 py-3"><span className="font-mono text-xs font-semibold text-gray-700">{complaint.number}</span></td>
-                    <td className="px-4 py-3">
-                      <div>
-                        <div className="font-medium text-gray-800 text-xs">{complaint.name}</div>
-                        <div className="text-xs text-gray-400">{complaint.mobile}</div>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3"><span className="text-gray-700 text-xs">{complaint.type}</span></td>
-                    <td className="px-4 py-3"><span className="text-gray-600 text-xs">{new Date(complaint.submittedAt).toLocaleDateString("en-IN")}</span></td>
-                    <td className="px-4 py-3"><StatusBadge status={complaint.status} /></td>
-                    <td className="px-4 py-3 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <button onClick={() => setViewComplaint(complaint)} className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors" style={{ color: "#6b7280", backgroundColor: "#f3f4f6" }}>
-                          <Eye size={14} /> பார்க்க
-                        </button>
-                        <button onClick={() => openEdit(complaint)} className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors" style={{ color: "#1D6FB9", backgroundColor: "#eef4fa" }}>
-                          <Edit3 size={14} /> திருத்து
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+        {loading && complaints.length === 0 ? (
+          <div className="flex h-32 items-center justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sky-600"></div>
+          </div>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b" style={{ borderColor: "#e5e7eb", backgroundColor: "#eef4fa" }}>
+                  <th className="text-left px-4 py-3 font-semibold text-xs" style={{ color: "#1D6FB9" }}>குறை எண்</th>
+                  <th className="text-left px-4 py-3 font-semibold text-xs" style={{ color: "#1D6FB9" }}>பெயர்</th>
+                  <th className="text-left px-4 py-3 font-semibold text-xs" style={{ color: "#1D6FB9" }}>வகை</th>
+                  <th className="text-left px-4 py-3 font-semibold text-xs" style={{ color: "#1D6FB9" }}>தேதி</th>
+                  <th className="text-left px-4 py-3 font-semibold text-xs" style={{ color: "#1D6FB9" }}>நிலை</th>
+                  <th className="text-right px-4 py-3 font-semibold text-xs" style={{ color: "#1D6FB9" }}>செயல்கள்</th>
+                </tr>
+              </thead>
+              <tbody>
+                {complaints.length === 0 ? (
+                  <tr><td colSpan={6} className="text-center py-12 text-gray-400">குறைகள் எதுவும் இல்லை</td></tr>
+                ) : (
+                  complaints.map((complaint) => {
+                    const submitterName = complaint.user?.name || "Anonymous";
+                    const submitterMobile = complaint.user?.mobile || "";
+                    return (
+                      <tr key={complaint.id} className="border-b hover:bg-[#eef4fa]/30 transition-colors" style={{ borderColor: "#e5e7eb" }}>
+                        <td className="px-4 py-3"><span className="font-mono text-xs font-semibold text-gray-700">{complaint.number}</span></td>
+                        <td className="px-4 py-3">
+                          <div>
+                            <div className="font-medium text-gray-800 text-xs">{submitterName}</div>
+                            <div className="text-xs text-gray-400">{submitterMobile}</div>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3"><span className="text-gray-700 text-xs">{complaint.type}</span></td>
+                        <td className="px-4 py-3"><span className="text-gray-600 text-xs">{new Date(complaint.createdAt).toLocaleDateString("en-IN")}</span></td>
+                        <td className="px-4 py-3"><StatusBadge status={complaint.status} /></td>
+                        <td className="px-4 py-3 text-right">
+                          <div className="flex items-center justify-end gap-2">
+                            <button onClick={() => setViewComplaint(complaint)} className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors" style={{ color: "#6b7280", backgroundColor: "#f3f4f6" }}>
+                              <Eye size={14} /> பார்க்க
+                            </button>
+                            <button onClick={() => openEdit(complaint)} className="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors" style={{ color: "#1D6FB9", backgroundColor: "#eef4fa" }}>
+                              <Edit3 size={14} /> திருத்து
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
 
       {/* View Modal */}
@@ -183,10 +210,10 @@ export default function ComplaintManagement() {
             </div>
             <div className="px-6 py-5 space-y-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white" style={{ backgroundColor: "#1D6FB9" }}>{viewComplaint.name.charAt(0)}</div>
+                <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white" style={{ backgroundColor: "#1D6FB9" }}>{(viewComplaint.user?.name || "A").charAt(0)}</div>
                 <div>
-                  <div className="font-semibold" style={{ color: "#1a2332" }}>{viewComplaint.name}</div>
-                  <div className="flex items-center gap-1 text-sm text-gray-400"><Phone size={12} /> {viewComplaint.mobile}</div>
+                  <div className="font-semibold" style={{ color: "#1a2332" }}>{viewComplaint.user?.name || "Anonymous"}</div>
+                  <div className="flex items-center gap-1 text-sm text-gray-400"><Phone size={12} /> {viewComplaint.user?.mobile}</div>
                 </div>
                 <div className="ml-auto"><StatusBadge status={viewComplaint.status} /></div>
               </div>
@@ -197,12 +224,59 @@ export default function ComplaintManagement() {
                 </div>
                 <div>
                   <div className="text-xs text-gray-400 font-medium">சமர்ப்பித்த தேதி</div>
-                  <div className="text-sm font-semibold" style={{ color: "#1a2332" }}>{new Date(viewComplaint.submittedAt).toLocaleString("en-IN")}</div>
+                  <div className="text-sm font-semibold" style={{ color: "#1a2332" }}>{new Date(viewComplaint.createdAt).toLocaleString("en-IN")}</div>
                 </div>
               </div>
               <div>
                 <div className="text-xs text-gray-400 font-medium mb-1">விளக்கம்</div>
                 <p className="text-sm text-gray-700 rounded-xl p-3" style={{ backgroundColor: "#f9fafb" }}>{viewComplaint.description}</p>
+                {viewComplaint.images && (
+                  <div className="mt-2 grid grid-cols-3 gap-2">
+                    {(() => {
+                      try {
+                        const imgs = typeof viewComplaint.images === 'string' ? JSON.parse(viewComplaint.images) : viewComplaint.images;
+                        return imgs.map((url, idx) => (
+                          <img
+                            key={idx}
+                            src={url}
+                            alt="complaint"
+                            className="w-full h-24 object-cover rounded cursor-pointer"
+                            onClick={() => {
+                              setGalleryOpen(true);
+                              setGalleryIndex(idx);
+                            }}
+                          />
+                        ));
+                      } catch {
+                        return null;
+                      }
+                    })()}
+                  </div>
+                )}
+                {/* Gallery Lightbox */}
+                {galleryOpen && (
+                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm" onClick={() => setGalleryOpen(false)}>
+                    <div className="relative max-w-3xl max-h-[90vh]" onClick={e => e.stopPropagation()}>
+                      <button
+                        className="absolute left-0 top-1/2 -translate-y-1/2 text-white text-3xl"
+                        onClick={e => { e.stopPropagation(); setGalleryIndex((galleryIndex - 1 + (Array.isArray(viewComplaint.images) ? viewComplaint.images.length : JSON.parse(viewComplaint.images).length)) % (Array.isArray(viewComplaint.images) ? viewComplaint.images.length : JSON.parse(viewComplaint.images).length)); }}
+                      >&#8249;</button>
+                      <img
+                        src={
+                          typeof viewComplaint.images === 'string'
+                            ? JSON.parse(viewComplaint.images)[galleryIndex]
+                            : viewComplaint.images[galleryIndex]
+                        }
+                        alt="complaint"
+                        className="w-full h-auto object-contain rounded"
+                      />
+                      <button
+                        className="absolute right-0 top-1/2 -translate-y-1/2 text-white text-3xl"
+                        onClick={e => { e.stopPropagation(); setGalleryIndex((galleryIndex + 1) % (Array.isArray(viewComplaint.images) ? viewComplaint.images.length : JSON.parse(viewComplaint.images).length)); }}
+                      >&#8250;</button>
+                    </div>
+                  </div>
+                )}
               </div>
               {viewComplaint.assignedTo && (
                 <div className="flex items-center gap-2 text-sm text-gray-600"><User size={14} /> ஒதுக்கப்பட்டவர்: <strong>{viewComplaint.assignedTo}</strong></div>
@@ -231,10 +305,10 @@ export default function ComplaintManagement() {
             </div>
             <div className="px-6 py-5 space-y-5">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white" style={{ backgroundColor: "#1D6FB9" }}>{editComplaint.name.charAt(0)}</div>
+                <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white" style={{ backgroundColor: "#1D6FB9" }}>{(editComplaint.user?.name || "A").charAt(0)}</div>
                 <div>
-                  <div className="font-semibold" style={{ color: "#1a2332" }}>{editComplaint.name}</div>
-                  <div className="text-xs text-gray-400">{editComplaint.type} · {editComplaint.mobile}</div>
+                  <div className="font-semibold" style={{ color: "#1a2332" }}>{editComplaint.user?.name || "Anonymous"}</div>
+                  <div className="text-xs text-gray-400">{editComplaint.type} · {editComplaint.user?.mobile}</div>
                 </div>
               </div>
 
