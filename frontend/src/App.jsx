@@ -28,7 +28,7 @@ export default function App() {
           <Route path="/status" element={<StatusPage />} />
           <Route path="/history" element={<StatusPage />} />
           <Route path="/history/:id" element={<StatusPage />} />
-          <Route path="/notifications" element={<NotificationsPage />} />
+          {/* <Route path="/notifications" element={<NotificationsPage />} /> */}
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />

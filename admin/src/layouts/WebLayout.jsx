@@ -26,11 +26,15 @@ export default function WebLayout({ children }) {
         <div className="h-24 flex items-center justify-center px-4 border-b" style={{ borderColor: "#e5e7eb" }}>
           {sidebarOpen ? (
             <div className="flex items-center gap-3">
-              <img src={icon} alt="Logo" className="h-12 w-12" />
+              <div className="grid h-14 w-14 place-items-center rounded-2xl bg-white shadow-sm overflow-hidden">
+                <img src="/icons/tnlogo.png" alt="TN logo" className="h-10 w-10 object-contain" />
+              </div>
               <span className="text-lg font-extrabold" style={{ color: "#1D6FB9" }}>நிர்வாகம்</span>
             </div>
           ) : (
-            <img src={icon} alt="Logo" className="h-10 w-10" />
+            <div className="grid h-12 w-12 place-items-center rounded-2xl bg-white shadow-sm overflow-hidden">
+              <img src="/icons/tnlogo.png" alt="TN logo" className="h-8 w-8 object-contain" />
+            </div>
           )}
         </div>
 

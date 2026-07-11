@@ -1,4 +1,4 @@
-import { Landmark, Megaphone } from "lucide-react";
+import { Landmark } from "lucide-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 

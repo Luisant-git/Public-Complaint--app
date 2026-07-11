@@ -1,4 +1,4 @@
-import { Megaphone, Phone, UserRound } from "lucide-react";
+import { Phone, UserRound } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -36,8 +36,8 @@ export function LoginPage() {
       <section className="relative overflow-hidden bg-government-600 px-7 pb-8 pt-8 text-white">
         <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-white/10" />
         <div className="relative">
-          <div className="grid h-11 w-11 place-items-center rounded-2xl bg-white text-government-600 shadow-lg">
-            <Megaphone className="h-5 w-5" />
+          <div className="grid h-18 w-18 place-items-center rounded-2xl bg-white shadow-lg overflow-hidden">
+            <img src="/assests/tnlogo.png" alt="TN logo" className="h-14 w-14 object-contain" />
           </div>
           <p className="mt-5 text-sm font-bold text-white/70">தமிழ்நாடு அரசு</p>
           <h1 className="mt-2 text-[22px] font-extrabold leading-tight">குறை தீர்க்கும் பயண்பாடு</h1>

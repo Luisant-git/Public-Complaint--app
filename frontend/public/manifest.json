@@ -9,9 +9,15 @@
   "theme_color": "#096a35",
   "icons": [
     {
-      "src": "/icons/app-icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
+      "src": "/assests/tnlogo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assests/tnlogo.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]
