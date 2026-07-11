@@ -53,7 +53,7 @@ export class ComplaintService {
     });
   }
 
-  async findAll(status?: string, type?: string, search?: string) {
+  async findAll(status?: string, type?: string, search?: string, fromDate?: string, toDate?: string) {
     const where: any = {};
 
     if (status && status !== 'All') {
@@ -78,6 +78,23 @@ export class ComplaintService {
           },
         },
       ];
+    }
+
+    // Date range filter (expects YYYY-MM-DD)
+    if (fromDate || toDate) {
+      where.createdAt = {};
+      if (fromDate) {
+        const from = new Date(fromDate);
+        // start of day
+        from.setHours(0, 0, 0, 0);
+        where.createdAt.gte = from;
+      }
+      if (toDate) {
+        const to = new Date(toDate);
+        // end of day
+        to.setHours(23, 59, 59, 999);
+        where.createdAt.lte = to;
+      }
     }
 
     return this.prisma.complaint.findMany({

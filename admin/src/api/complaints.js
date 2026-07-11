@@ -31,6 +31,8 @@ export const complaintsApi = {
     if (filters.status && filters.status !== 'All') params.append('status', filters.status);
     if (filters.type && filters.type !== 'All') params.append('type', filters.type);
     if (filters.search) params.append('search', filters.search);
+    if (filters.fromDate) params.append('fromDate', filters.fromDate);
+    if (filters.toDate) params.append('toDate', filters.toDate);
 
     const url = `${VITE_API_URL}/complaints?${params.toString()}`;
     const response = await fetch(url, {

@@ -6,6 +6,15 @@ import { toast } from "react-toastify";
 
 const COMPLAINT_TYPES = ["Water Supply", "Road Damage", "Garbage Collection", "Street Light", "Drainage", "Noise Complaint"];
 
+const COMPLAINT_TYPE_LABELS = {
+  "Water Supply": "குடிநீர் தொடர்பான குறை",
+  "Road Damage": "சாலை குறை",
+  "Garbage Collection": "துப்புரவு சேவை குறை",
+  "Street Light": "தெருவிளக்கு குறை",
+  "Drainage": "கழிவு நீர் குறை",
+  "Noise Complaint": "சத்தக்குறை",
+};
+
 export default function Dashboard() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -63,7 +72,7 @@ export default function Dashboard() {
   return (
     <div className="space-y-6 animate-fadeIn">
       {/* Page Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-xl sm:text-2xl font-extrabold" style={{ color: "#1a2332" }}>கட்டுப்பாட்டு பலகம்</h1>
           <p className="text-xs sm:text-sm text-gray-500 mt-1">
@@ -77,7 +86,7 @@ export default function Dashboard() {
       </div>
 
       {/* Main Stats Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
         {[
           { icon: MessageSquare, label: "மொத்த குறைகள்", value: stats.total, color: "#1D6FB9", bgColor: "#eef4fa", change: "மொத்தம்" },
           { icon: Clock, label: "பரிசீலனையில்", value: stats.pending, color: "#d97706", bgColor: "#fffbeb", change: "நிலுவை" },
@@ -133,11 +142,12 @@ export default function Dashboard() {
           <div className="space-y-2 sm:space-y-3">
             {typeStats.map(t => {
               const pct = stats.total > 0 ? (t.count / stats.total) * 100 : 0;
+              const label = COMPLAINT_TYPE_LABELS[t.type] || t.type;
               return (
                 <div key={t.type} className="flex items-center gap-2 sm:gap-3">
                   <div className="flex-1">
                     <div className="flex justify-between items-center mb-1">
-                      <span className="text-xs font-medium text-gray-600">{t.type}</span>
+                      <span className="text-xs font-medium text-gray-600">{label}</span>
                       <span className="text-xs font-bold" style={{ color: "#1D6FB9" }}>{t.count}</span>
                     </div>
                     <div className="w-full h-2 rounded-full" style={{ backgroundColor: "#eef4fa" }}>

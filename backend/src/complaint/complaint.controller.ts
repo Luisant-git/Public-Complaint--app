@@ -54,12 +54,16 @@ export class ComplaintController {
   @ApiQuery({ name: 'status', required: false, description: 'Filter by status' })
   @ApiQuery({ name: 'type', required: false, description: 'Filter by complaint type' })
   @ApiQuery({ name: 'search', required: false, description: 'Search term for name, mobile, number, or description' })
+  @ApiQuery({ name: 'fromDate', required: false, description: 'Filter from date (YYYY-MM-DD)' })
+  @ApiQuery({ name: 'toDate', required: false, description: 'Filter to date (YYYY-MM-DD)' })
   findAll(
     @Query('status') status?: string,
     @Query('type') type?: string,
     @Query('search') search?: string,
+    @Query('fromDate') fromDate?: string,
+    @Query('toDate') toDate?: string,
   ) {
-    return this.complaintService.findAll(status, type, search);
+    return this.complaintService.findAll(status, type, search, fromDate, toDate);
   }
 
   @Get(':id')

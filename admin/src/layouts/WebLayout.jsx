@@ -23,7 +23,7 @@ export default function WebLayout({ children }) {
       {/* Sidebar */}
       <aside className={`${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 fixed md:relative inset-y-0 left-0 z-40 bg-white border-r flex flex-col transition-all duration-300 shadow-sm flex-shrink-0 ${sidebarOpen ? "w-64" : "md:w-16 w-64"}`} style={{ borderColor: "#e5e7eb" }}>
         {/* Logo */}
-        <div className="h-24 flex items-center justify-center px-4 border-b" style={{ borderColor: "#e5e7eb" }}>
+        <div className="h-24 flex items-center justify-center px-4 border-b relative" style={{ borderColor: "#e5e7eb" }}>
           {sidebarOpen ? (
             <div className="flex items-center gap-3">
               <div className="grid h-14 w-14 place-items-center rounded-2xl bg-white shadow-sm overflow-hidden">
@@ -36,6 +36,12 @@ export default function WebLayout({ children }) {
               <img src="/icons/tnlogo.png" alt="TN logo" className="h-8 w-8 object-contain" />
             </div>
           )}
+        
+          {/* Mobile: explicit close inside sidebar for visibility */}
+          <button onClick={() => setSidebarOpen(false)} aria-label="Close sidebar" className="md:hidden absolute top-3 right-3 text-gray-500 hover:text-gray-700 p-2 rounded-lg">
+            <X size={18} />
+          </button>
+
         </div>
 
         {/* Nav */}
@@ -74,8 +80,8 @@ export default function WebLayout({ children }) {
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Topbar */}
         <header className="h-16 bg-white border-b flex items-center px-4 sm:px-6 gap-4 flex-shrink-0 shadow-sm" style={{ borderColor: "#e5e7eb" }}>
-          <button onClick={() => setSidebarOpen(p => !p)} className="text-gray-400 hover:text-gray-700 transition-colors md:hidden">
-            <Menu size={20} />
+          <button onClick={() => setSidebarOpen(p => !p)} aria-label="Toggle sidebar" aria-expanded={sidebarOpen} className="text-gray-400 hover:text-gray-700 transition-colors md:hidden p-2 rounded-lg">
+            {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
           {sidebarOpen && <button onClick={() => setSidebarOpen(false)} className="text-gray-400 hover:text-gray-700 transition-colors hidden md:block">
             <X size={20} />
