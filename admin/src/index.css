@@ -1,0 +1,90 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+Tamil:wght@400;500;600;700;800&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --color-blue-50: #eef4fa;
+  --color-blue-100: #d9e6f5;
+  --color-blue-200: #b3cde8;
+  --color-blue-300: #80afd9;
+  --color-blue-400: #4d8fc9;
+  --color-blue-500: #1D6FB9;
+  --color-blue-600: #1D6FB9;
+  --color-blue-700: #165a94;
+  --color-primary: #1D6FB9;
+  --color-primary-dark: #165a94;
+  --font-tamil: "Noto Sans Tamil", sans-serif;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: "Noto Sans Tamil", sans-serif;
+    background-color: #f0f4f8;
+    color: #1a2332;
+  }
+  input, textarea, select {
+    pointer-events: auto !important;
+    user-select: text !important;
+    -webkit-user-select: text !important;
+    touch-action: manipulation;
+  }
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f3f4f6;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+  }
+}
+
+@layer utilities {
+  .sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 1rem;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    cursor: pointer;
+    width: 100%;
+  }
+  .sidebar-link-active {
+    background-color: #1D6FB9;
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(29, 111, 185, 0.35);
+  }
+  .sidebar-link-inactive {
+    color: #4b5563;
+  }
+  .sidebar-link-inactive:hover {
+    background-color: #eef4fa;
+    color: #1D6FB9;
+  }
+  .card {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.05);
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out;
+}

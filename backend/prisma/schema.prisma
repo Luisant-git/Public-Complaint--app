@@ -1,0 +1,51 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Admin User ──────────────────────────────────────────────────────────────
+model Admin {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("Admin") // "Admin" | "SuperAdmin"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── Public User (Complaint Submitter) ───────────────────────────────────────
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  mobile    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  complaints Complaint[]
+}
+
+// ─── Complaint ───────────────────────────────────────────────────────────────
+model Complaint {
+  id          Int      @id @default(autoincrement())
+  number      String   @unique // e.g. CMP202607111234
+  type        String   // Water Supply, Road Damage, Garbage Collection, etc.
+  description String
+  location    String
+  images      String?  // JSON array of image URLs
+  status      String   @default("பரிசீலனையில் உள்ளது") // Pending | Action Taken | Resolved
+  assignedTo  String?
+  remarks     String?
+
+  userId   Int
+  user     User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
