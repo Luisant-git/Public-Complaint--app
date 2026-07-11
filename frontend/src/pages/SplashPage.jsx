@@ -16,7 +16,7 @@ export function SplashPage() {
         <div className="absolute -left-10 top-12 h-40 w-40 rounded-full bg-black/15 md:-left-16 md:h-48 md:w-48" />
         <div className="absolute -right-10 bottom-10 h-48 w-48 rounded-full bg-[#fec901]/20 md:-right-16 md:h-56 md:w-56" />
         <div className="relative float-gently w-full max-w-full px-4 md:max-w-[420px]">
-          <div className="mx-auto grid h-20 w-20 place-items-center rounded-[28px] bg-white text-[#9f0100] shadow-[0_18px_40px_rgba(0,0,0,0.22)]"><Megaphone className="h-10 w-10" strokeWidth={2.3} /></div>
+          <img src="/assests/tvk.jfif" alt="Splash illustration" className="mx-auto h-36 w-36 rounded-[32px] object-cover shadow-xl" />
           <div className="mt-7">
             <div className="flex items-center justify-center gap-2 text-sm font-extrabold text-white">
               <Landmark className="h-4 w-4" />தமிழ்நாடு அரசு

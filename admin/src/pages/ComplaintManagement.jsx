@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Search, Eye, Edit3, CheckCircle, Clock, AlertTriangle, MessageSquare, Phone, User, Save } from "lucide-react";
+import { Search, Eye, Edit3, CheckCircle, Clock, AlertTriangle, MessageSquare, Phone, User, Save, X } from "lucide-react";
 import { complaintsApi } from "../api/complaints.js";
 import { useAuth } from "../context/AuthContext.jsx";
 import { toast } from "react-toastify";
@@ -256,11 +256,25 @@ export default function ComplaintManagement() {
                 {/* Gallery Lightbox */}
                 {galleryOpen && (
                   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm" onClick={() => setGalleryOpen(false)}>
-                    <div className="relative max-w-3xl max-h-[90vh]" onClick={e => e.stopPropagation()}>
+                    <div className="relative w-[min(92vw,900px)] max-h-[90vh]" onClick={e => e.stopPropagation()}>
                       <button
-                        className="absolute left-0 top-1/2 -translate-y-1/2 text-white text-3xl"
-                        onClick={e => { e.stopPropagation(); setGalleryIndex((galleryIndex - 1 + (Array.isArray(viewComplaint.images) ? viewComplaint.images.length : JSON.parse(viewComplaint.images).length)) % (Array.isArray(viewComplaint.images) ? viewComplaint.images.length : JSON.parse(viewComplaint.images).length)); }}
-                      >&#8249;</button>
+                        className="absolute right-4 top-4 rounded-full bg-black/50 p-2 text-white hover:bg-black/70"
+                        onClick={() => setGalleryOpen(false)}
+                        aria-label="Close image preview"
+                      >
+                        <X size={20} />
+                      </button>
+                      <button
+                        className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-3 text-white hover:bg-black/70"
+                        onClick={e => {
+                          e.stopPropagation();
+                          const imageCount = Array.isArray(viewComplaint.images) ? viewComplaint.images.length : JSON.parse(viewComplaint.images).length;
+                          setGalleryIndex((galleryIndex - 1 + imageCount) % imageCount);
+                        }}
+                        aria-label="Previous image"
+                      >
+                        &#8249;
+                      </button>
                       <img
                         src={
                           typeof viewComplaint.images === 'string'
@@ -268,12 +282,19 @@ export default function ComplaintManagement() {
                             : viewComplaint.images[galleryIndex]
                         }
                         alt="complaint"
-                        className="w-full h-auto object-contain rounded"
+                        className="w-full max-h-[82vh] h-auto object-contain rounded"
                       />
                       <button
-                        className="absolute right-0 top-1/2 -translate-y-1/2 text-white text-3xl"
-                        onClick={e => { e.stopPropagation(); setGalleryIndex((galleryIndex + 1) % (Array.isArray(viewComplaint.images) ? viewComplaint.images.length : JSON.parse(viewComplaint.images).length)); }}
-                      >&#8250;</button>
+                        className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-3 text-white hover:bg-black/70"
+                        onClick={e => {
+                          e.stopPropagation();
+                          const imageCount = Array.isArray(viewComplaint.images) ? viewComplaint.images.length : JSON.parse(viewComplaint.images).length;
+                          setGalleryIndex((galleryIndex + 1) % imageCount);
+                        }}
+                        aria-label="Next image"
+                      >
+                        &#8250;
+                      </button>
                     </div>
                   </div>
                 )}
