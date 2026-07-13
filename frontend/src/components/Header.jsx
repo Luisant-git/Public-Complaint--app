@@ -11,7 +11,7 @@ export function Header({ title, back = false, action = "notification" }) {
       </div>
       {action === "notification" ? (
         <button type="button" onClick={() => {}} aria-label="அறிவிப்புகள்" className="relative grid h-9 w-9 place-items-center rounded-full transition hover:bg-white/10">
-          <Bell className="h-5 w-5" />
+          {/* <Bell className="h-5 w-5" /> */}
           <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#fec901] text-xs font-bold text-[#9f0100] ring-2 ring-[#9f0100]">3</span>
         </button>
       ) : action === "menu" ? (
