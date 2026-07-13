@@ -1,4 +1,4 @@
-import { ClipboardCheck, RefreshCw } from "lucide-react";
+import { ClipboardCheck, RefreshCw, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/Button";
@@ -177,7 +177,10 @@ export function StatusPage() {
   const { currentComplaint } = useComplaint();
   const [complaints, setComplaints] = useState([]);
   const [loading, setLoading] = useState(true);
-
+const PAGE_SIZE = 10;
+const [searchNumber, setSearchNumber] = useState("");
+const [searchType, setSearchType] = useState("");
+const [currentPage, setCurrentPage] = useState(1);
   const load = async () => {
     setLoading(true);
     try {
@@ -190,7 +193,14 @@ export function StatusPage() {
     }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
+
+  // Reset page when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchNumber, searchType]);
 
   if (loading) {
     return (
@@ -220,6 +230,20 @@ export function StatusPage() {
       </main>
     );
   }
+  // Search and pagination logic
+  const complaintTypes = Array.from(new Set(complaints.map(c => c.type))).sort();
+  const filtered = complaints.filter(c => {
+    const matchesNumber = searchNumber === "" || c.number.includes(searchNumber);
+    const matchesType = searchType === "" || c.type === searchType;
+    return matchesNumber && matchesType;
+  });
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const paginated = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  const goToPage = (page) => {
+    if (page < 1) page = 1;
+    if (page > pageCount) page = pageCount;
+    setCurrentPage(page);
+  };
 
   return (
     <main className="min-h-dvh bg-gray-50 pb-24">
@@ -229,7 +253,7 @@ export function StatusPage() {
           <div>
             <h1 className="text-lg font-extrabold text-slate-800">என் குறைகள்</h1>
             <p className="text-xs text-gray-500 mt-0.5">
-              {complaints.length} {complaints.length === 1 ? "குறை" : "குறைகள்"}
+              {filtered.length} {filtered.length === 1 ? "குறை" : "குறைகள்"}
             </p>
           </div>
           <button
@@ -240,9 +264,71 @@ export function StatusPage() {
           </button>
         </div>
 
-        {complaints.map((c) => (
+<div className="flex flex-col sm:flex-row gap-2 mt-4 p-4 bg-white rounded-2xl shadow-sm border border-gray-100">
+  <div className="flex-1 min-w-0">
+    <input
+      type="text"
+      placeholder="குறை எண் தேடவும்..."
+      value={searchNumber}
+      onChange={(e) => setSearchNumber(e.target.value)}
+      className="w-full h-10 rounded-xl border border-gray-200 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-government-500"
+    />
+  </div>
+  <div className="flex-1 min-w-0">
+    <select
+      value={searchType}
+      onChange={(e) => setSearchType(e.target.value)}
+      className="w-full h-10 rounded-xl border border-gray-200 px-4 text-sm focus:outline-none focus:ring-2 focus:ring-government-500"
+    >
+      <option value="">அனைத்து வகைகள்</option>
+      {complaintTypes.map((type) => (
+        <option key={type} value={type}>
+          {type}
+        </option>
+      ))}
+    </select>
+  </div>
+  {(searchNumber || searchType) && (
+    <button
+      type="button"
+      onClick={() => {
+        setSearchNumber('');
+        setSearchType('');
+        setCurrentPage(1);
+      }}
+      className="flex items-center justify-center w-10 h-10 border rounded text-gray-600 hover:bg-gray-50"
+    >
+      <X size={16} />
+    </button>
+  )}
+</div>
+
+{/* Pagination */}
+        {paginated.map((c) => (
           <ComplaintCard key={c.id} complaint={c} />
         ))}
+
+        <div className="bg-white/70 backdrop-blur-lg border border-white/30 rounded-2xl shadow-xl p-4 mt-4">
+          <div className="flex items-center justify-between text-sm">
+            <button
+              disabled={currentPage === 1}
+              onClick={() => goToPage(currentPage - 1)}
+              className="flex items-center justify-center w-9 h-9 disabled:opacity-50 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 transition-colors duration-200 rounded-full"
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <span>
+              Page {currentPage} of {pageCount}
+            </span>
+            <button
+              disabled={currentPage === pageCount}
+              onClick={() => goToPage(currentPage + 1)}
+                className="flex items-center justify-center w-9 h-9 disabled:opacity-50 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 transition-colors duration-200 rounded-full"
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        </div>
       </div>
     </main>
   );

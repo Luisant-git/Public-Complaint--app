@@ -12,6 +12,7 @@ import { ProfilePage } from "./pages/ProfilePage";
 import { SplashPage } from "./pages/SplashPage";
 import { StatusPage } from "./pages/StatusPage";
 
+
 export default function App() {
   return (
     <ComplaintProvider>
@@ -30,7 +31,7 @@ export default function App() {
           <Route path="/history/:id" element={<StatusPage />} />
          
           <Route path="/profile" element={<ProfilePage />} />
-        </Route>
+</Route>
         {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
       </Routes>
       <ToastContainer position="top-center" autoClose={2600} closeButton theme="light" />
