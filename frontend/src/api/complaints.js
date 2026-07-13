@@ -1,5 +1,5 @@
 // src/api/complaints.js — Frontend complaints API
-const API = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API = import.meta.env.VITE_API_URL;
 
 const getToken = () => localStorage.getItem('complaint_token');
 const authHeaders = () => ({

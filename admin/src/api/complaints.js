@@ -1,5 +1,5 @@
 // src/api/complaints.js
-const VITE_API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const handleResponse = async (response) => {
   if (response.status === 204) return null;

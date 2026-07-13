@@ -1,7 +1,7 @@
 // src/api/upload.js
 // Helper to upload a single image file to the backend.
 
-const VITE_API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 export async function uploadImage(file) {
   const formData = new FormData();

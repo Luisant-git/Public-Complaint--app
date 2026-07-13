@@ -1,5 +1,5 @@
 // src/api/auth.js  — Frontend public-user auth
-const API = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API = import.meta.env.VITE_API_URL;
 
 const handle = async (res) => {
   const data = await res.json().catch(() => null);
