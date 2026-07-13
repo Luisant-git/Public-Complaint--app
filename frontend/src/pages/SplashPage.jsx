@@ -36,7 +36,7 @@ export function SplashPage() {
             <div className="flex items-center justify-center gap-2 text-sm font-extrabold text-white">
               <Landmark className="h-4 w-4" />தமிழ்நாடு அரசு
             </div>
-            <h1 className="mt-3 text-2xl font-extrabold leading-tight text-white drop-shadow-[0_16px_20px_rgba(0,0,0,0.28)]">குறை தீர்க்கும்<br/>பயன்பாடு</h1>
+            <h1 className="mt-3 text-2xl font-extrabold leading-tight text-white drop-shadow-[0_16px_20px_rgba(0,0,0,0.28)]">குறை தீர்க்கும்<br/>பயண்பாடு</h1>
             <p className="mt-3 text-base font-semibold leading-7 text-white/95">மக்கள் குறைகளை எளிதாக பதிவு செய்யும் தளம்</p>
           </div>
         </div>
