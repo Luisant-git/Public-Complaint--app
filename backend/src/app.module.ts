@@ -18,12 +18,18 @@ import { UploadModule } from './upload/upload.module';
     ComplaintModule,
     UploadModule,
     ServeStaticModule.forRoot({
-      // Serve the uploads folder. In production the compiled JS resides in the dist folder,
-      // so we resolve the path relative to the compiled file location.
-      rootPath: join(__dirname, '..', 'uploads'),
+      // Serve the uploads folder from the project root (works in dev and prod)
+      rootPath: join(process.cwd(), 'uploads'),
       // The API is hosted under the '/4180' sub‑path, so static files must be served from
       // that same prefix to match the URLs returned by the upload controller.
       serveRoot: '/4180/uploads',
+      serveStaticOptions: { index: false },
+    }),
+    // Backward‑compatible route – also serve the same folder at plain '/uploads'
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'uploads'),
+      serveRoot: '/uploads',
+      serveStaticOptions: { index: false },
     }),
   ],
   controllers: [AppController],
