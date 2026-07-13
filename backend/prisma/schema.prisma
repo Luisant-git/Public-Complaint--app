@@ -46,6 +46,8 @@ model Complaint {
   userId   Int
   user     User   @relation(fields: [userId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  actionTakenAt DateTime? // when status changed to "நடவடிக்கை எடுக்கப்பட்டது"
+  resolvedAt    DateTime? // when status changed to "தீர்க்கப்பட்டது"
 }

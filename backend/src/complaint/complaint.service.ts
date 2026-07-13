@@ -133,11 +133,24 @@ export class ComplaintService {
   }
 
   async update(id: number, updateComplaintDto: UpdateComplaintDto) {
-    await this.findOne(id);
+    const existing = await this.findOne(id);
+
+    const { status } = updateComplaintDto;
+    const data: any = { ...updateComplaintDto };
+
+    // Auto-set date fields when status changes
+    if (status && status !== existing.status) {
+      if (status === 'நடவடிக்கை எடுக்கப்பட்டது') {
+        data.actionTakenAt = new Date();
+      }
+      if (status === 'தீர்க்கப்பட்டது') {
+        data.resolvedAt = new Date();
+      }
+    }
 
     return this.prisma.complaint.update({
       where: { id },
-      data: updateComplaintDto,
+      data,
       include: {
         user: true,
       },
