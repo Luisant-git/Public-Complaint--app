@@ -29,7 +29,7 @@ export default defineConfig({
         start_url: "/",
         display: "standalone",
         background_color: "#f7faf7",
-        theme_color: "9f0100",
+        theme_color: "#9f0100",
         icons: [
           {
             src: "/icons/app-icon.svg",
@@ -38,6 +38,11 @@ export default defineConfig({
             purpose: "any maskable",
           },
         ],
+      },
+      workbox: {
+        cleanupOutdatedCaches: true,
+        skipWaiting: true,
+        clientsClaim: true,
       },
     }),
   ],
