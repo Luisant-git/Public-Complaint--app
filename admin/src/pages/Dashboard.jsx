@@ -4,17 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { complaintsApi } from "../api/complaints.js";
 import { toast } from "react-toastify";
 
-const COMPLAINT_TYPES = ["Water Supply", "Road Damage", "Garbage Collection", "Street Light", "Drainage", "Noise Complaint"];
-
-const COMPLAINT_TYPE_LABELS = {
-  "Water Supply": "குடிநீர் தொடர்பான குறை",
-  "Road Damage": "சாலை குறை",
-  "Garbage Collection": "துப்புரவு சேவை குறை",
-  "Street Light": "தெருவிளக்கு குறை",
-  "Drainage": "கழிவு நீர் குறை",
-  "Noise Complaint": "சத்தக்குறை",
-};
-
 export default function Dashboard() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -46,11 +35,14 @@ export default function Dashboard() {
     loadData();
   }, []);
 
+  // குறை வகைகள் (complaint types) are derived directly from the backend API
+  // response (stats.byType), which is keyed by the Tamil category names
+  // stored on each complaint.
   const typeStats = useMemo(() => {
-    return COMPLAINT_TYPES.map(type => ({
-      type,
-      count: stats.byType?.[type] || 0,
-    }));
+    const byType = stats.byType || {};
+    return Object.entries(byType)
+      .map(([type, count]) => ({ type, count }))
+      .sort((a, b) => b.count - a.count);
   }, [stats.byType]);
 
   const statusCounts = [
@@ -59,7 +51,7 @@ export default function Dashboard() {
     { label: "தீர்க்கப்பட்டது", count: stats.resolved, color: "#16a34a", bgColor: "#f0fdf4" },
   ];
 
-  const maxCount = Math.max(...statusCounts.map(s => s.count), 1);
+  const maxCount = Math.max(...statusCounts.map((s) => s.count), 1);
 
   if (loading) {
     return (
@@ -108,8 +100,8 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {/* Status Distribution + Recent Complaints */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+      {/* Status Distribution + Complaint Type Distribution */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Status Distribution Bar */}
         <div className="bg-white rounded-xl p-4 sm:p-6 border shadow-sm lg:col-span-1" style={{ borderColor: "#e5e7eb" }}>
           <h3 className="font-bold text-sm sm:text-base mb-4 sm:mb-5" style={{ color: "#1a2332" }}>நிலை விபரம்</h3>
@@ -136,18 +128,20 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* Complaint Type Distribution */}
+        {/* Complaint Type Distribution (from backend API) */}
         <div className="bg-white rounded-xl p-4 sm:p-6 border shadow-sm lg:col-span-1" style={{ borderColor: "#e5e7eb" }}>
           <h3 className="font-bold text-sm sm:text-base mb-4 sm:mb-5" style={{ color: "#1a2332" }}>குறை வகைகள்</h3>
           <div className="space-y-2 sm:space-y-3">
-            {typeStats.map(t => {
+            {typeStats.length === 0 && (
+              <p className="text-xs text-gray-400">தரவு இல்லை</p>
+            )}
+            {typeStats.map((t) => {
               const pct = stats.total > 0 ? (t.count / stats.total) * 100 : 0;
-              const label = COMPLAINT_TYPE_LABELS[t.type] || t.type;
               return (
                 <div key={t.type} className="flex items-center gap-2 sm:gap-3">
                   <div className="flex-1">
                     <div className="flex justify-between items-center mb-1">
-                      <span className="text-xs font-medium text-gray-600">{label}</span>
+                      <span className="text-xs font-medium text-gray-600">{t.type}</span>
                       <span className="text-xs font-bold" style={{ color: "#1D6FB9" }}>{t.count}</span>
                     </div>
                     <div className="w-full h-2 rounded-full" style={{ backgroundColor: "#eef4fa" }}>
@@ -157,40 +151,6 @@ export default function Dashboard() {
                 </div>
               );
             })}
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="bg-white rounded-xl p-4 sm:p-6 border shadow-sm lg:col-span-1" style={{ borderColor: "#e5e7eb" }}>
-          <h3 className="font-bold text-sm sm:text-base mb-4 sm:mb-5" style={{ color: "#1a2332" }}>விரைவு செயல்கள்</h3>
-          <div className="space-y-2 sm:space-y-3">
-            <button onClick={() => navigate("/complaints")} className="w-full flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl transition-all hover:scale-[1.01] active:scale-[0.98]" style={{ backgroundColor: "#eef4fa" }}>
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: "#1D6FB9" }}>
-                <MessageSquare size={18} className="text-white" />
-              </div>
-              <div className="text-left">
-                <div className="text-xs sm:text-sm font-bold" style={{ color: "#1a2332" }}>குறைகளை நிர்வகிக்க</div>
-                <div className="text-xs text-gray-500 hidden sm:block">அனைத்து குறைகளையும் பார்க்க</div>
-              </div>
-            </button>
-            <button onClick={() => navigate("/complaints")} className="w-full flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl transition-all hover:scale-[1.01] active:scale-[0.98]" style={{ backgroundColor: "#fffbeb" }}>
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: "#d97706" }}>
-                <Clock size={18} className="text-white" />
-              </div>
-              <div className="text-left">
-                <div className="text-xs sm:text-sm font-bold" style={{ color: "#1a2332" }}>நிலுவையில் உள்ள குறைகள்</div>
-                <div className="text-xs text-gray-500">{stats.pending} குறைகள் பரிசீலனையில்</div>
-              </div>
-            </button>
-            <button onClick={() => navigate("/complaints")} className="w-full flex items-center gap-3 sm:gap-4 p-3 sm:p-4 rounded-xl transition-all hover:scale-[1.01] active:scale-[0.98]" style={{ backgroundColor: "#f0fdf4" }}>
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: "#16a34a" }}>
-                <CheckCircle size={18} className="text-white" />
-              </div>
-              <div className="text-left">
-                <div className="text-xs sm:text-sm font-bold" style={{ color: "#1a2332" }}>தீர்க்கப்பட்ட குறைகள்</div>
-                <div className="text-xs text-gray-500">{stats.resolved} குறைகள் தீர்க்கப்பட்டன</div>
-              </div>
-            </button>
           </div>
         </div>
       </div>
@@ -214,11 +174,11 @@ export default function Dashboard() {
         <div className="block sm:hidden">
           <div className="space-y-3 p-3">
             {latestComplaints.map((c) => {
-              const cfg = c.status === "பரிசீலனையில் உள்ளது" 
+              const cfg = c.status === "பரிசீலனையில் உள்ளது"
                 ? { bg: "bg-amber-50", text: "text-amber-700", dot: "bg-amber-400", shortLabel: "பரிசீலனை" }
-                : c.status === "நடவடிக்கை எடுக்கப்பட்டது" 
-                ? { bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-400", shortLabel: "நடவடிக்கை" }
-                : { bg: "bg-emerald-50", text: "text-emerald-700", dot: "bg-emerald-400", shortLabel: "தீர்க்கப்பட்டது" };
+                : c.status === "நடவடிக்கை எடுக்கப்பட்டது"
+                  ? { bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-400", shortLabel: "நடவடிக்கை" }
+                  : { bg: "bg-emerald-50", text: "text-emerald-700", dot: "bg-emerald-400", shortLabel: "தீர்க்கப்பட்டது" };
               return (
                 <div key={c.id} onClick={() => navigate("/complaints")} className="p-4 bg-white border rounded-2xl shadow-sm cursor-pointer" style={{ borderColor: "#e5e7eb" }}>
                   {/* Complaint number first */}
@@ -255,11 +215,11 @@ export default function Dashboard() {
             </thead>
             <tbody className="divide-y" style={{ borderColor: "#f9fafb" }}>
               {latestComplaints.map((c) => {
-                const st = c.status === "பரிசீலனையில் உள்ளது" 
+                const st = c.status === "பரிசீலனையில் உள்ளது"
                   ? { bg: "bg-amber-50", text: "text-amber-700", dot: "bg-amber-400", label: "பரிசீலனையில்" }
-                  : c.status === "நடவடிக்கை எடுக்கப்பட்டது" 
-                  ? { bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-400", label: "நடவடிக்கை" }
-                  : { bg: "bg-emerald-50", text: "text-emerald-700", dot: "bg-emerald-400", label: "தீர்க்கப்பட்டது" };
+                  : c.status === "நடவடிக்கை எடுக்கப்பட்டது"
+                    ? { bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-400", label: "நடவடிக்கை" }
+                    : { bg: "bg-emerald-50", text: "text-emerald-700", dot: "bg-emerald-400", label: "தீர்க்கப்பட்டது" };
                 const submitterName = c.user?.name || "Anonymous";
                 const submitterMobile = c.user?.mobile || "";
                 return (
