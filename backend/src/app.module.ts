@@ -27,7 +27,7 @@ import { UploadModule } from './upload/upload.module';
     }),
     // Backward‑compatible route – also serve the same folder at plain '/uploads'
     ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'uploads'),
+      rootPath: join(__dirname, '..', '..', 'uploads'),
       serveRoot: '/uploads',
       serveStaticOptions: { index: false },
     }),
