@@ -55,7 +55,7 @@ export class UploadController {
       throw new BadRequestException('No file uploaded');
     }
 
-    const baseUrl = process.env.UPLOAD_URL || 'http://localhost:3000/uploads';
+    const baseUrl = process.env.UPLOAD_URL;
     const sizeInMB = Number((file.size / (1024 * 1024)).toFixed(2));
 
     return {

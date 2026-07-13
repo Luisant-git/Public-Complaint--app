@@ -49,7 +49,7 @@ export default function WebLayout({ children }) {
           {NAV_ITEMS.map(item => {
             const active = location.pathname === item.path;
             return (
-              <button key={item.path} onClick={() => { navigate(item.path); setSidebarOpen(false); }}
+              <button key={item.path} onClick={() => { navigate(item.path); if (window.innerWidth < 768) setSidebarOpen(false); }}
                 title={!sidebarOpen ? item.taLabel : ""}
                 className={`w-full sidebar-link ${active ? "sidebar-link-active" : "sidebar-link-inactive"}`}>
                 <item.icon size={20} className="flex-shrink-0" />

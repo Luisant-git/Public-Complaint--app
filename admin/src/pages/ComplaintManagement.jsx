@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Search, Eye, Edit3, CheckCircle, Clock, AlertTriangle, MessageSquare, Phone, User, Save, X } from "lucide-react";
+import { Search, Eye, Edit3, CheckCircle, Clock, AlertTriangle, MessageSquare, Phone, User, Save, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { complaintsApi } from "../api/complaints.js";
 import { useAuth } from "../context/AuthContext.jsx";
 import { toast } from "react-toastify";
@@ -22,6 +22,8 @@ const COMPLAINT_TYPES = [
   "மற்றவை",
 ];
 
+const ITEMS_PER_PAGE = 10;
+
 function StatusBadge({ status }) {
   const style = STATUS_STYLES[status] || STATUS_STYLES["பரிசீலனையில் உள்ளது"];
   const Icon = style.icon;
@@ -30,6 +32,62 @@ function StatusBadge({ status }) {
       <Icon size={12} />
       {style.taLabel}
     </span>
+  );
+}
+
+function Pagination({ currentPage, totalPages, onPageChange }) {
+  if (totalPages <= 1) return null;
+
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisible = 5;
+    let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    let end = Math.min(totalPages, start + maxVisible - 1);
+    if (end - start + 1 < maxVisible) {
+      start = Math.max(1, end - maxVisible + 1);
+    }
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+    return pages;
+  };
+
+  return (
+    <div className="flex items-center justify-between px-4 py-3 border-t" style={{ borderColor: "#e5e7eb" }}>
+      <p className="text-xs text-gray-500">
+        பக்கம் {currentPage} / {totalPages}
+      </p>
+      <div className="flex items-center gap-1">
+        <button
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="p-2 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-100"
+        >
+          <ChevronLeft size={16} className="text-gray-600" />
+        </button>
+        {getPageNumbers().map((page) => (
+          <button
+            key={page}
+            onClick={() => onPageChange(page)}
+            className={`min-w-[32px] h-8 rounded-lg text-xs font-bold transition-all ${
+              page === currentPage
+                ? "text-white shadow-sm"
+                : "text-gray-600 hover:bg-gray-100"
+            }`}
+            style={page === currentPage ? { backgroundColor: "#1D6FB9" } : {}}
+          >
+            {page}
+          </button>
+        ))}
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="p-2 rounded-lg transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:bg-gray-100"
+        >
+          <ChevronRight size={16} className="text-gray-600" />
+        </button>
+      </div>
+    </div>
   );
 }
 
@@ -48,6 +106,7 @@ export default function ComplaintManagement() {
   const [editComplaint, setEditComplaint] = useState(null);
   const [editStatus, setEditStatus] = useState("");
   const [editRemarks, setEditRemarks] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const loadComplaints = async () => {
     try {
@@ -60,6 +119,7 @@ export default function ComplaintManagement() {
         toDate,
       });
       setComplaints(data);
+      setCurrentPage(1);
     } catch (err) {
       toast.error("குறைகளை ஏற்றுவதில் பிழை ஏற்பட்டது.");
     } finally {
@@ -71,9 +131,14 @@ export default function ComplaintManagement() {
     const delayDebounceFn = setTimeout(() => {
       loadComplaints();
     }, 300);
-
     return () => clearTimeout(delayDebounceFn);
   }, [search, typeFilter, statusFilter, fromDate, toDate]);
+
+  const totalPages = Math.ceil(complaints.length / ITEMS_PER_PAGE);
+  const paginatedComplaints = complaints.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
 
   const stats = {
     total: complaints.length,
@@ -110,7 +175,6 @@ export default function ComplaintManagement() {
     setStatusFilter("All");
     setFromDate("");
     setToDate("");
-    // immediate reload
     loadComplaints();
   };
 
@@ -201,10 +265,10 @@ export default function ComplaintManagement() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200">
-                {complaints.length === 0 ? (
+                {paginatedComplaints.length === 0 ? (
                   <tr><td colSpan={6} className="text-center py-12 text-gray-400">குறைகள் எதுவும் இல்லை</td></tr>
                 ) : (
-                  complaints.map((complaint) => {
+                  paginatedComplaints.map((complaint) => {
                     const submitterName = complaint.user?.name || "Anonymous";
                     const submitterMobile = complaint.user?.mobile || "";
                     return (
@@ -237,15 +301,17 @@ export default function ComplaintManagement() {
                 )}
               </tbody>
               </table>
+              {/* Desktop Pagination */}
+              <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
             </div>
 
             {/* Mobile: card list */}
             <div className="block md:hidden">
               <div className="space-y-3 p-3">
-                {complaints.length === 0 ? (
+                {paginatedComplaints.length === 0 ? (
                   <div className="text-center py-12 text-gray-400">குறைகள் எதுவும் இல்லை</div>
                 ) : (
-                  complaints.map(complaint => (
+                  paginatedComplaints.map(complaint => (
                     <div key={complaint.id} className="p-4 bg-white border rounded-2xl shadow-sm">
                       <div className="flex items-start gap-3">
                         <div className="flex-1">
@@ -267,6 +333,8 @@ export default function ComplaintManagement() {
                   ))
                 )}
               </div>
+              {/* Mobile Pagination */}
+              <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
             </div>
           </>
         )}
@@ -328,7 +396,6 @@ export default function ComplaintManagement() {
                     })()}
                   </div>
                 )}
-                {/* Gallery Lightbox */}
                 {galleryOpen && (
                   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm" onClick={() => setGalleryOpen(false)}>
                     <div className="relative w-[min(92vw,900px)] max-h-[90vh]" onClick={e => e.stopPropagation()}>
