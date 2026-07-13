@@ -1,6 +1,10 @@
 import { Landmark } from "lucide-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import topLeftImg from "../../public/assests/4.jpeg";
+import topRightImg from "../../public/assests/5.jpeg";
+import bottomImg from "../../public/assests/2.jpeg";
+
 
 export function SplashPage() {
   const navigate = useNavigate();
@@ -18,13 +22,13 @@ export function SplashPage() {
         <div className="relative float-gently w-full max-w-full px-4 md:max-w-[420px]">
             <div className="flex flex-col items-center gap-6">
               <div className="absolute top-4 left-4 w-24 h-24 bg-white rounded-full shadow-md overflow-hidden">
-            <img src="/assests/4.jpeg" alt="Top left" className="object-contain w-full h-full" />
+            <img src={topLeftImg} alt="Top left" className="object-contain w-full h-full" />
           </div>
           <div className="absolute top-4 right-4 w-24 h-24 bg-white rounded-full shadow-md overflow-hidden">
-            <img src="/assests/5.jpeg" alt="Top right" className="object-contain w-full h-full" />
+            <img src={topRightImg} alt="Top right" className="object-contain w-full h-full" />
           </div>
               <div className="flex items-center justify-center w-24 h-24 bg-white rounded-full shadow-md p-1 overflow-hidden">
-                <img src="/assests/2.jpeg" alt="Bottom" className="object-contain w-full h-full rounded-full" />
+                <img src={bottomImg} alt="Bottom" className="object-contain w-full h-full rounded-full" />
               </div>
             </div>
 <img src="/assests/tvk.jfif" alt="Splash illustration" className="mx-auto h-36 w-36 rounded-[32px] object-cover shadow-xl" />
