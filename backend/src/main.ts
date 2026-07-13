@@ -36,7 +36,7 @@ async function bootstrap() {
 
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
-  console.log(`🚀 குறை மேலாண்மை server running on http://localhost:${port}`);
+  console.log(`🚀 Compliant management app server running on http://localhost:${port}`);
   console.log(`📚 Swagger UI: http://localhost:${port}/api/docs`);
 }
 bootstrap();
