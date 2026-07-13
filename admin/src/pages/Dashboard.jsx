@@ -210,48 +210,34 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {/* Mobile Cards */}
-        <div className="divide-y sm:hidden" style={{ borderColor: "#f3f4f6" }}>
-          {latestComplaints.map((c) => {
-            const st = c.status === "பரிசீலனையில் உள்ளது" 
-              ? { bg: "bg-amber-50", text: "text-amber-700", dot: "bg-amber-400", label: "பரிசீலனையில்" }
-              : c.status === "நடவடிக்கை எடுக்கப்பட்டது" 
-              ? { bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-400", label: "நடவடிக்கை" }
-              : { bg: "bg-emerald-50", text: "text-emerald-700", dot: "bg-emerald-400", label: "தீர்க்கப்பட்டது" };
-            const submitterName = c.user?.name || "Anonymous";
-            const submitterMobile = c.user?.mobile || "";
-            return (
-              <div key={c.id} onClick={() => navigate("/complaints")} className="p-4 hover:bg-gray-50/60 transition-colors cursor-pointer">
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: "#1D6FB9" }}>{submitterName.charAt(0)}</div>
-                    <div>
-                      <div className="text-sm font-semibold" style={{ color: "#1a2332" }}>{submitterName}</div>
-                      <div className="text-xs text-gray-400">{submitterMobile}</div>
-                    </div>
+        {/* Mobile Cards - same style as ComplaintManagement */}
+        <div className="block sm:hidden">
+          <div className="space-y-3 p-3">
+            {latestComplaints.map((c) => {
+              const cfg = c.status === "பரிசீலனையில் உள்ளது" 
+                ? { bg: "bg-amber-50", text: "text-amber-700", dot: "bg-amber-400", shortLabel: "பரிசீலனை" }
+                : c.status === "நடவடிக்கை எடுக்கப்பட்டது" 
+                ? { bg: "bg-blue-50", text: "text-blue-700", dot: "bg-blue-400", shortLabel: "நடவடிக்கை" }
+                : { bg: "bg-emerald-50", text: "text-emerald-700", dot: "bg-emerald-400", shortLabel: "தீர்க்கப்பட்டது" };
+              return (
+                <div key={c.id} onClick={() => navigate("/complaints")} className="p-4 bg-white border rounded-2xl shadow-sm cursor-pointer" style={{ borderColor: "#e5e7eb" }}>
+                  {/* Complaint number first */}
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="font-mono text-xs font-bold" style={{ color: "#1D6FB9" }}>{c.number}</div>
+                    <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold whitespace-nowrap ${cfg.bg} ${cfg.text}`}>
+                      {cfg.shortLabel}
+                    </span>
                   </div>
-                  <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold ${st.bg} ${st.text}`}>
-                    <span className={`w-1.5 h-1.5 rounded-full ${st.dot}`} />
-                    {st.label}
-                  </span>
+                  {/* Name */}
+                  <div className="font-semibold text-sm mt-2 truncate" style={{ color: "#1a2332" }}>{c.user?.name || 'Anonymous'}</div>
+                  {/* Type + Location */}
+                  <div className="text-xs text-gray-600 mt-1 truncate">{c.type}{c.location ? ` · ${c.location}` : ''}</div>
+                  {/* Date */}
+                  <div className="text-xs text-gray-400 mt-1">{new Date(c.createdAt).toLocaleDateString('en-IN')}</div>
                 </div>
-                <div className="space-y-1 ml-0">
-                  <div className="flex items-center gap-2 text-xs">
-                    <span className="text-gray-400">வகை:</span>
-                    <span className="font-medium text-gray-600">{c.type}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs">
-                    <span className="text-gray-400">இடம்:</span>
-                    <span className="text-gray-600">{c.location}</span>
-                  </div>
-                  <div className="flex items-center justify-between pt-1 border-t" style={{ borderColor: "#f3f4f6" }}>
-                    <span className="text-xs text-gray-400 font-mono">{c.number}</span>
-                    <span className="text-xs text-gray-400">{new Date(c.createdAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
 
         {/* Desktop Table */}
@@ -282,12 +268,9 @@ export default function Dashboard() {
                       <span className="text-sm font-mono font-semibold" style={{ color: "#1D6FB9" }}>{c.number}</span>
                     </td>
                     <td className="px-6 sm:px-8 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold text-white" style={{ backgroundColor: "#1D6FB9" }}>{submitterName.charAt(0)}</div>
-                        <div>
-                          <div className="text-sm font-semibold" style={{ color: "#1a2332" }}>{submitterName}</div>
-                          <div className="text-xs text-gray-400">{submitterMobile}</div>
-                        </div>
+                      <div>
+                        <div className="text-sm font-semibold" style={{ color: "#1a2332" }}>{submitterName}</div>
+                        <div className="text-xs text-gray-400">{submitterMobile}</div>
                       </div>
                     </td>
                     <td className="px-6 sm:px-8 py-4">
