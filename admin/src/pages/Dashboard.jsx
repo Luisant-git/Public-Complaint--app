@@ -4,6 +4,16 @@ import { useNavigate } from "react-router-dom";
 import { complaintsApi } from "../api/complaints.js";
 import { toast } from "react-toastify";
 
+const COMPLAINT_CATEGORIES = [
+  "குடிநீர் தொடர்பான குறை",
+  "மின்சாரம் / தெருவிளக்கு குறை",
+  "சாலை குறை",
+  "சுகாதார குறை",
+  "கட்டிட வசதி குறை",
+  "பொது போக்குவரத்து குறை",
+  "மற்றவை",
+];
+
 export default function Dashboard() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -40,8 +50,8 @@ export default function Dashboard() {
   // stored on each complaint.
   const typeStats = useMemo(() => {
     const byType = stats.byType || {};
-    return Object.entries(byType)
-      .map(([type, count]) => ({ type, count }))
+    return COMPLAINT_CATEGORIES
+      .map((type) => ({ type, count: byType[type] || 0 }))
       .sort((a, b) => b.count - a.count);
   }, [stats.byType]);
 
@@ -132,9 +142,6 @@ export default function Dashboard() {
         <div className="bg-white rounded-xl p-4 sm:p-6 border shadow-sm lg:col-span-1" style={{ borderColor: "#e5e7eb" }}>
           <h3 className="font-bold text-sm sm:text-base mb-4 sm:mb-5" style={{ color: "#1a2332" }}>குறை வகைகள்</h3>
           <div className="space-y-2 sm:space-y-3">
-            {typeStats.length === 0 && (
-              <p className="text-xs text-gray-400">தரவு இல்லை</p>
-            )}
             {typeStats.map((t) => {
               const pct = stats.total > 0 ? (t.count / stats.total) * 100 : 0;
               return (
@@ -204,7 +211,7 @@ export default function Dashboard() {
         <div className="overflow-x-auto hidden sm:block">
           <table className="w-full">
             <thead>
-              <tr className="border-b" style={{ borderColor: "#f3f4f6" }}>
+              <tr className="border-b border-[#e5e7eb]">
                 <th className="text-left px-6 sm:px-8 py-3 text-xs font-semibold uppercase tracking-wider" style={{ color: "#6b7280" }}>குறை எண்</th>
                 <th className="text-left px-6 sm:px-8 py-3 text-xs font-semibold uppercase tracking-wider" style={{ color: "#6b7280" }}>புகார்தாரர்</th>
                 <th className="text-left px-6 sm:px-8 py-3 text-xs font-semibold uppercase tracking-wider" style={{ color: "#6b7280" }}>வகை</th>
@@ -213,7 +220,7 @@ export default function Dashboard() {
                 <th className="text-right px-6 sm:px-8 py-3 text-xs font-semibold uppercase tracking-wider" style={{ color: "#6b7280" }}>நிலை</th>
               </tr>
             </thead>
-            <tbody className="divide-y" style={{ borderColor: "#f9fafb" }}>
+            <tbody className="divide-y divide-[#e5e7eb]">
               {latestComplaints.map((c) => {
                 const st = c.status === "பரிசீலனையில் உள்ளது"
                   ? { bg: "bg-amber-50", text: "text-amber-700", dot: "bg-amber-400", label: "பரிசீலனையில்" }

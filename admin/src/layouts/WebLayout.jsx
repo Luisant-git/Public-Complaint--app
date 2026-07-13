@@ -21,27 +21,19 @@ export default function WebLayout({ children }) {
   return (
     <div className="flex h-screen overflow-hidden" style={{ backgroundColor: "#f0f4f8" }}>
       {/* Sidebar */}
-      <aside className={`${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 fixed md:relative inset-y-0 left-0 z-40 bg-white border-r flex flex-col transition-all duration-300 shadow-sm flex-shrink-0 ${sidebarOpen ? "w-64" : "md:w-16 w-64"}`} style={{ borderColor: "#e5e7eb" }}>
+      <aside className={`${sidebarOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 fixed md:relative inset-y-0 left-0 z-40 bg-white border-r flex flex-col shadow-sm flex-shrink-0 w-64`} style={{ borderColor: "#e5e7eb" }}>
         {/* Logo */}
         <div className="h-24 flex items-center justify-center px-4 border-b relative" style={{ borderColor: "#e5e7eb" }}>
-          {sidebarOpen ? (
-            <div className="flex items-center gap-3">
-              <div className="grid h-14 w-14 place-items-center rounded-2xl bg-white shadow-sm overflow-hidden">
-                <img src="/icons/tnlogo.png" alt="TN logo" className="h-10 w-10 object-contain" />
-              </div>
-              <span className="text-lg font-extrabold" style={{ color: "#1D6FB9" }}>நிர்வாகம்</span>
+          <div className="flex items-center gap-3">
+            <div className="grid h-14 w-14 place-items-center rounded-2xl bg-white shadow-sm overflow-hidden">
+              <img src="/icons/tnlogo.png" alt="TN logo" className="h-10 w-10 object-contain" />
             </div>
-          ) : (
-            <div className="grid h-12 w-12 place-items-center rounded-2xl bg-white shadow-sm overflow-hidden">
-              <img src="/icons/tnlogo.png" alt="TN logo" className="h-8 w-8 object-contain" />
-            </div>
-          )}
-        
-          {/* Mobile: explicit close inside sidebar for visibility */}
+            <span className="text-lg font-extrabold" style={{ color: "#1D6FB9" }}>நிர்வாகம்</span>
+          </div>
+          {/* Mobile: close button inside sidebar */}
           <button onClick={() => setSidebarOpen(false)} aria-label="Close sidebar" className="md:hidden absolute top-3 right-3 text-gray-500 hover:text-gray-700 p-2 rounded-lg">
             <X size={18} />
           </button>
-
         </div>
 
         {/* Nav */}
@@ -50,10 +42,9 @@ export default function WebLayout({ children }) {
             const active = location.pathname === item.path;
             return (
               <button key={item.path} onClick={() => { navigate(item.path); if (window.innerWidth < 768) setSidebarOpen(false); }}
-                title={!sidebarOpen ? item.taLabel : ""}
                 className={`w-full sidebar-link ${active ? "sidebar-link-active" : "sidebar-link-inactive"}`}>
                 <item.icon size={20} className="flex-shrink-0" />
-                {sidebarOpen && <span className="truncate text-base">{item.taLabel}</span>}
+                <span className="truncate text-base">{item.taLabel}</span>
               </button>
             );
           })}
@@ -61,7 +52,7 @@ export default function WebLayout({ children }) {
 
         {/* User info + Logout */}
         <div className="p-3 border-t" style={{ borderColor: "#e5e7eb" }}>
-          {sidebarOpen && user && (
+          {user && (
             <div className="flex items-center gap-2 px-2 mb-2">
               <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ backgroundColor: "#1D6FB9" }}>
                 {user.name?.charAt(0)}
@@ -71,7 +62,7 @@ export default function WebLayout({ children }) {
           )}
           <button onClick={handleLogout} className="w-full sidebar-link sidebar-link-inactive flex items-center gap-2 px-2 py-2 rounded-xl transition-colors hover:bg-red-50" style={{ color: "#dc2626" }}>
             <LogOut size={18} />
-            {sidebarOpen && <span className="text-sm">வெளியேறு</span>}
+            <span className="text-sm">வெளியேறு</span>
           </button>
         </div>
       </aside>
@@ -80,12 +71,11 @@ export default function WebLayout({ children }) {
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Topbar */}
         <header className="h-16 bg-white border-b flex items-center px-4 sm:px-6 gap-4 flex-shrink-0 shadow-sm" style={{ borderColor: "#e5e7eb" }}>
-          <button onClick={() => setSidebarOpen(p => !p)} aria-label="Toggle sidebar" aria-expanded={sidebarOpen} className="text-gray-400 hover:text-gray-700 transition-colors md:hidden p-2 rounded-lg">
-            {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-          {sidebarOpen && <button onClick={() => setSidebarOpen(false)} className="text-gray-400 hover:text-gray-700 transition-colors hidden md:block">
-            <X size={20} />
-          </button>}
+          {!sidebarOpen && (
+            <button onClick={() => setSidebarOpen(true)} aria-label="Open sidebar" className="md:hidden text-gray-400 hover:text-gray-700 transition-colors p-2 rounded-lg">
+              <Menu size={20} />
+            </button>
+          )}
 
           <div className="flex-1 max-w-sm">
             <div className="relative">

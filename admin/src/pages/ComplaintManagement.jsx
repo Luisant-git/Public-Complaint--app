@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Search, Eye, Edit3, CheckCircle, Clock, AlertTriangle, MessageSquare, Phone, User, Save, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { Search, Eye, SquarePen, CheckCircle, Clock, AlertTriangle, MessageSquare, Phone, User, Save, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { complaintsApi } from "../api/complaints.js";
 import { useAuth } from "../context/AuthContext.jsx";
 import { toast } from "react-toastify";
@@ -71,8 +71,8 @@ function Pagination({ currentPage, totalPages, onPageChange }) {
             key={page}
             onClick={() => onPageChange(page)}
             className={`min-w-[32px] h-8 rounded-lg text-xs font-bold transition-all ${page === currentPage
-                ? "text-white shadow-sm"
-                : "text-gray-600 hover:bg-gray-100"
+              ? "text-white shadow-sm"
+              : "text-gray-600 hover:bg-gray-100"
               }`}
             style={page === currentPage ? { backgroundColor: "#1D6FB9" } : {}}
           >
@@ -277,7 +277,7 @@ export default function ComplaintManagement() {
                       const submitterMobile = complaint.user?.mobile || "";
                       return (
                         <tr key={complaint.id} className="border-b hover:bg-[#eef4fa]/30 transition-colors" style={{ borderColor: "#e5e7eb" }}>
-                          <td className="px-3 py-3 align-top"><span className="font-mono text-xs font-semibold whitespace-nowrap" style={{ color: "#1D6FB9" }}>{complaint.number}</span></td>
+                          <td className="px-3 py-3 align-top"><span className="font-mono text-sm font-bold whitespace-nowrap" style={{ color: "#1D6FB9" }}>{complaint.number}</span></td>
                           <td className="px-3 py-3 align-top">
                             <div className="max-w-[120px]">
                               <div className="font-medium text-gray-800 text-xs truncate">{submitterName}</div>
@@ -298,7 +298,7 @@ export default function ComplaintManagement() {
                                 <Eye size={13} /> பார்க்க
                               </button>
                               <button onClick={() => openEdit(complaint)} className="inline-flex items-center gap-1 px-2 py-1.5 text-xs font-semibold rounded-lg transition-colors" style={{ color: "#1D6FB9", backgroundColor: "#eef4fa" }}>
-                                <Edit3 size={13} />திருத்து
+                                <SquarePen size={13} />திருத்து
                               </button>
                             </div>
                           </td>
@@ -322,7 +322,7 @@ export default function ComplaintManagement() {
                     <div key={complaint.id} className="p-4 bg-white border rounded-2xl shadow-sm" style={{ borderColor: "#e5e7eb" }}>
                       {/* Complaint number first */}
                       <div className="flex items-center justify-between gap-2">
-                        <div className="font-mono text-xs font-bold text-government-700">{complaint.number}</div>
+                        <div className="font-mono text-sm font-bold" style={{ color: "#1D6FB9" }}>{complaint.number}</div>
                         <StatusBadge status={complaint.status} short />
                       </div>
                       {/* Name */}
@@ -336,7 +336,7 @@ export default function ComplaintManagement() {
                       {/* Actions in same line */}
                       <div className="mt-3 flex gap-2">
                         <button onClick={() => setViewComplaint(complaint)} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" style={{ backgroundColor: '#f3f4f6', color: '#6b7280' }}><Eye size={13} /> பார்க்க</button>
-                        <button onClick={() => openEdit(complaint)} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" style={{ backgroundColor: '#eef4fa', color: '#1D6FB9' }}><Edit3 size={13} /> திருத்து</button>
+                        <button onClick={() => openEdit(complaint)} className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap" style={{ backgroundColor: '#eef4fa', color: '#1D6FB9' }}><SquarePen size={13} /> திருத்து</button>
                       </div>
                     </div>
                   ))
@@ -356,7 +356,7 @@ export default function ComplaintManagement() {
             <div className="px-6 py-5 border-b flex items-center justify-between" style={{ borderColor: "#e5e7eb" }}>
               <div>
                 <h3 className="font-bold text-lg" style={{ color: "#1a2332" }}>குறை விவரங்கள்</h3>
-                <p className="text-xs text-gray-400 font-mono">{viewComplaint.number}</p>
+                <p className="text-sm font-bold font-mono" style={{ color: "#1D6FB9" }}>{viewComplaint.number}</p>
               </div>
               <button onClick={() => setViewComplaint(null)} className="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
             </div>
@@ -370,20 +370,20 @@ export default function ComplaintManagement() {
               </div>
               <div className="grid grid-cols-2 gap-4 p-4 rounded-xl" style={{ backgroundColor: "#eef4fa" }}>
                 <div>
-                  <div className="text-xs text-gray-400 font-medium">குறை வகை</div>
+                  <div className="text-xs font-semibold" style={{ color: "#1D6FB9" }}>குறை வகை</div>
                   <div className="text-sm font-semibold" style={{ color: "#1a2332" }}>{viewComplaint.type}</div>
                 </div>
                 <div>
-                  <div className="text-xs text-gray-400 font-medium">இடம்</div>
+                  <div className="text-xs font-semibold" style={{ color: "#1D6FB9" }}>இடம்</div>
                   <div className="text-sm font-semibold" style={{ color: "#1a2332" }}>{viewComplaint.location || "-"}</div>
                 </div>
                 <div>
-                  <div className="text-xs text-gray-400 font-medium">சமர்ப்பித்த தேதி</div>
+                  <div className="text-xs font-semibold" style={{ color: "#1D6FB9" }}>சமர்ப்பித்த தேதி</div>
                   <div className="text-sm font-semibold" style={{ color: "#1a2332" }}>{new Date(viewComplaint.createdAt).toLocaleString("en-IN")}</div>
                 </div>
               </div>
               <div>
-                <div className="text-xs text-gray-400 font-medium mb-1">விளக்கம்</div>
+                <div className="text-xs font-semibold mb-1" style={{ color: "#1D6FB9" }}>விளக்கம்</div>
                 <p className="text-sm text-gray-700 rounded-xl p-3" style={{ backgroundColor: "#f9fafb" }}>{viewComplaint.description}</p>
                 {viewComplaint.images && (
                   <div className="mt-2 grid grid-cols-3 gap-2">
@@ -458,7 +458,7 @@ export default function ComplaintManagement() {
               )}
               {viewComplaint.remarks && (
                 <div>
-                  <div className="text-xs text-gray-400 font-medium mb-1">குறிப்புகள்</div>
+                  <div className="text-xs font-semibold mb-1" style={{ color: "#1D6FB9" }}>குறிப்புகள்</div>
                   <p className="text-sm text-gray-700 rounded-xl p-3" style={{ backgroundColor: "#eef4fa" }}>{viewComplaint.remarks}</p>
                 </div>
               )}
@@ -474,11 +474,11 @@ export default function ComplaintManagement() {
             <div className="px-6 py-5 border-b flex items-center justify-between" style={{ borderColor: "#e5e7eb" }}>
               <div>
                 <h3 className="font-bold text-lg" style={{ color: "#1a2332" }}>குறையை திருத்து</h3>
-                <p className="text-xs text-gray-400 font-mono">{editComplaint.number}</p>
+                <p className="text-sm font-bold font-mono" style={{ color: "#1D6FB9" }}>{editComplaint.number}</p>
               </div>
               <button onClick={() => setEditComplaint(null)} className="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
             </div>
-            <div className="px-6 py-5 space-y-5">
+            <div className="px-5 py-5 space-y-4 sm:px-6">
               <div className="flex items-center gap-3">
                 <div>
                   <div className="font-semibold" style={{ color: "#1a2332" }}>{editComplaint.user?.name || "Anonymous"}</div>
@@ -487,12 +487,12 @@ export default function ComplaintManagement() {
               </div>
 
               <div>
-                <div className="text-xs text-gray-400 font-medium mb-1">இடம்</div>
+                <div className="text-xs font-semibold mb-1" style={{ color: "#1D6FB9" }}>இடம்</div>
                 <p className="text-sm text-gray-600 rounded-xl p-3" style={{ backgroundColor: "#f9fafb" }}>{editComplaint.location || "-"}</p>
               </div>
 
               <div>
-                <div className="text-xs text-gray-400 font-medium mb-1">விளக்கம்</div>
+                <div className="text-xs font-semibold mb-1" style={{ color: "#1D6FB9" }}>விளக்கம்</div>
                 <p className="text-sm text-gray-600 rounded-xl p-3" style={{ backgroundColor: "#f9fafb" }}>{editComplaint.description}</p>
               </div>
 
@@ -518,9 +518,9 @@ export default function ComplaintManagement() {
                 <textarea value={editRemarks} onChange={e => setEditRemarks(e.target.value)} placeholder="குறிப்புகளை இங்கே சேர்க்கவும்..." className="w-full border rounded-xl px-4 py-3 text-sm outline-none resize-none transition-all" style={{ borderColor: "#e5e7eb", minHeight: "100px" }} onFocus={e => e.target.style.borderColor = "#1D6FB9"} onBlur={e => e.target.style.borderColor = "#e5e7eb"} />
               </div>
 
-              <button onClick={saveEdit} className="w-full text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.98]" style={{ backgroundColor: "#1D6FB9", boxShadow: "0 8px 20px rgba(29,111,185,0.25)" }}>
+              <button onClick={saveEdit} className="w-full text-white font-bold py-3 rounded-xl transition-all flex items-center justify-center gap-2 hover:scale-[1.01] active:scale-[0.98] whitespace-nowrap" style={{ backgroundColor: "#1D6FB9", boxShadow: "0 8px 20px rgba(29,111,185,0.25)" }}>
                 <Save size={18} className="shrink-0" />
-                <span className="leading-tight">மாற்றங்களை சேமிக்க</span>
+                <span>மாற்றங்களை சேமிக்க</span>
               </button>
             </div>
           </div>
