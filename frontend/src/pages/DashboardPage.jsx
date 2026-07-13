@@ -48,7 +48,7 @@ export function DashboardPage() {
   const actions = [
     { label: "புதிய குறை பதிவு", hint: "குறையை பதிவு செய்ய", Icon: ClipboardPlus, style: "bg-gradient-to-br from-[#9f0100] to-[#9f0100] text-white", onClick: () => navigate("/complaint-types") },
     { label: "குறை நிலை", hint: "பதிவின் நிலையை அறிய", Icon: MapPinned, style: "bg-gradient-to-br from-amber-500 to-amber-600 text-white", onClick: () => navigate("/status") },
-    { label: "அறிவிப்புகள்", hint: "புதிய தகவல்களைப் பார்க்க", Icon: Bell, style: "bg-gradient-to-br from-violet-500 to-violet-600 text-white", onClick: () => navigate("/notifications") },
+    { label: "அறிவிப்புகள்", hint: "புதிய தகவல்களைப் பார்க்க", Icon: Bell, style: "bg-gradient-to-br from-violet-500 to-violet-600 text-white", onClick: () => {} },
   ];
 
   const showBar = !isInstalled && !barDismissed;

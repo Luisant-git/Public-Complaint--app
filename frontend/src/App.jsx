@@ -7,7 +7,7 @@ import { ComplaintSuccessPage } from "./pages/ComplaintSuccessPage";
 import { ComplaintTypesPage } from "./pages/ComplaintTypesPage";
 import { DashboardPage } from "./pages/DashboardPage";
 import { LoginPage } from "./pages/LoginPage";
-import { NotificationsPage } from "./pages/NotificationsPage";
+// import { NotificationsPage } from "./pages/NotificationsPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { SplashPage } from "./pages/SplashPage";
 import { StatusPage } from "./pages/StatusPage";
@@ -28,10 +28,10 @@ export default function App() {
           <Route path="/status" element={<StatusPage />} />
           <Route path="/history" element={<StatusPage />} />
           <Route path="/history/:id" element={<StatusPage />} />
-          {/* <Route path="/notifications" element={<NotificationsPage />} /> */}
+         
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
       </Routes>
       <ToastContainer position="top-center" autoClose={2600} closeButton theme="light" />
     </ComplaintProvider>

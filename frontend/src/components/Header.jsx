@@ -9,7 +9,16 @@ export function Header({ title, back = false, action = "notification" }) {
         {back ? <button onClick={() => navigate(-1)} aria-label="பின்செல்" className="grid h-10 w-10 shrink-0 place-items-center rounded-full transition hover:bg-white/10"><ArrowLeft className="h-5 w-5" /></button> : <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-white shadow-sm overflow-hidden"><img src="/assests/tnlogo.png" alt="TN logo" className="h-8 w-8 object-contain" /></div>}
         <div className="min-w-0"><p className="truncate text-[15px] font-extrabold tracking-tight">{title}</p>{!back && <p className="mt-0.5 text-[10px] font-medium text-white/70">மக்கள் குறை தீர்க்கும் தளம்</p>}</div>
       </div>
-      {action === "notification" ? <button onClick={() => navigate("/notifications")} aria-label="அறிவிப்புகள்" className="relative grid h-9 w-9 place-items-center rounded-full transition hover:bg-white/10"><Bell className="h-5 w-5" /><span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-[#fec901] ring-2 ring-[#9f0100]" /></button> : action === "menu" ? <Menu className="h-5 w-5" /> : <span className="w-9" />}
+      {action === "notification" ? (
+        <button type="button" onClick={() => {}} aria-label="அறிவிப்புகள்" className="relative grid h-9 w-9 place-items-center rounded-full transition hover:bg-white/10">
+          <Bell className="h-5 w-5" />
+          <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#fec901] text-xs font-bold text-[#9f0100] ring-2 ring-[#9f0100]">3</span>
+        </button>
+      ) : action === "menu" ? (
+        <Menu className="h-5 w-5" />
+      ) : (
+        <span className="w-9" />
+      )}
     </header>
   );
 }
