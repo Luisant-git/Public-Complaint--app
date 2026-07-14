@@ -4,7 +4,6 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
-import { viteSingleFile } from "vite-plugin-singlefile";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,7 +13,6 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
-    viteSingleFile(),
     VitePWA({
       registerType: "autoUpdate",
       devOptions: {
@@ -43,6 +41,7 @@ export default defineConfig({
         cleanupOutdatedCaches: true,
         skipWaiting: true,
         clientsClaim: true,
+        // Ensure HTML is not precached; Vite will emit a fresh index.html on each build
       },
     }),
   ],
