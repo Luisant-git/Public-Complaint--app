@@ -44,7 +44,7 @@ export function ComplaintFormPage() {
           <span className="mb-2 block text-[13px] font-bold text-slate-700">குறை வகை</span>
           <input
             type="text"
-            placeholder="குறை வகையை இங்கு உள்ளிடவும் (எ.கா: திருந்துதல், கழிவு சேவை)"
+            placeholder="குறை வகையை இங்கு உள்ளிடவும்"
             className={`w-full rounded-xl border bg-white px-3.5 py-3 text-sm font-medium text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-government-500 focus:ring-4 focus:ring-government-100 ${errors.customType ? "border-rose-400" : "border-slate-200"}`}
             {...register("customType", { required: "குறை வகையை உள்ளிடவும்.", minLength: { value: 3, message: "அதிகப்படியான விவரம் (குறைந்தது 3 எழுத்துகள்)." } })}
           />
