@@ -1,9 +1,9 @@
 import { Landmark } from "lucide-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import topLeftImg from "../../public/assests/4.jpeg";
-import topRightImg from "../../public/assests/5.jpeg";
-import bottomImg from "../../public/assests/2.jpeg";
+const topLeftImg = "/assests/4.jpeg";
+const topRightImg = "/assests/5.jpeg";
+const bottomImg = "/assests/2.jpeg";
 
 
 export function SplashPage() {
