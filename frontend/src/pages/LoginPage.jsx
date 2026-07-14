@@ -37,7 +37,7 @@ export function LoginPage() {
         <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-white/10" />
         <div className="relative">
           <div className="grid h-18 w-18 place-items-center rounded-2xl bg-white shadow-lg overflow-hidden">
-            <img src="/assests/tnlogo.png" alt="TN logo" className="h-14 w-14 object-contain" />
+            <img src="/assests/tvk.jfif" alt="TVK logo" className="h-14 w-14 object-contain" />
           </div>
           <p className="mt-5 text-sm font-bold text-white/70">தமிழ்நாடு அரசு</p>
           <h1 className="mt-2 text-[22px] font-extrabold leading-tight">குறை தீர்க்கும் பயண்பாடு</h1>

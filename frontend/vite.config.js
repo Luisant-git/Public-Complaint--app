@@ -18,7 +18,7 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
-      includeAssets: ["icons/app-icon.svg"],
+      includeAssets: ["assests/tvk.jfif"],
       manifest: {
         name: "குறை தீர்க்கும் பயண்பாடு",
         short_name: "குறை தீர்வு",
@@ -30,9 +30,9 @@ export default defineConfig({
         theme_color: "#9f0100",
         icons: [
           {
-            src: "/icons/app-icon.svg",
+            src: "/assests/tvk.jfif",
             sizes: "any",
-            type: "image/svg+xml",
+            type: "image/jfif",
             purpose: "any maskable",
           },
         ],
