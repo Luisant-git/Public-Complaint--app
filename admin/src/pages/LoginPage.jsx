@@ -36,7 +36,7 @@ export default function LoginPage() {
         <div className="flex justify-center mb-8">
           <div className="flex items-center gap-3">
             <div className="grid h-18 w-18 place-items-center rounded-2xl bg-white shadow-lg overflow-hidden">
-              <img src="/icons/tnlogo.png" alt="TN logo" className="h-14 w-14 object-contain" />
+              <img src="/icons/tvk.jfif" alt="TVK logo" className="h-14 w-14 object-contain" />
             </div>
             <span className="text-2xl font-extrabold" style={{ color: "#1D6FB9" }}>நிர்வாகம்</span>
           </div>

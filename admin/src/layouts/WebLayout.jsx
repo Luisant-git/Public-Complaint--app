@@ -26,7 +26,7 @@ export default function WebLayout({ children }) {
         <div className="h-24 flex items-center justify-center px-4 border-b relative" style={{ borderColor: "#e5e7eb" }}>
           <div className="flex items-center gap-3">
             <div className="grid h-14 w-14 place-items-center rounded-2xl bg-white shadow-sm overflow-hidden">
-              <img src="/icons/tnlogo.png" alt="TN logo" className="h-10 w-10 object-contain" />
+              <img src="/icons/tvk.jfif" alt="TVK logo" className="h-10 w-10 object-contain" />
             </div>
             <span className="text-lg font-extrabold" style={{ color: "#1D6FB9" }}>நிர்வாகம்</span>
           </div>
