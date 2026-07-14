@@ -36,12 +36,12 @@ export const auth = {
     return handleResponse(response);
   },
 
-  // Login with email and password
-  async login(email, password) {
+  // Login with mobile and password
+  async login(mobile, password) {
     const response = await fetch(`${VITE_API_URL}/auth/admin/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ mobile, password }),
     });
 
     const data = await handleResponse(response);

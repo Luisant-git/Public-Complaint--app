@@ -26,6 +26,7 @@ export class AuthService {
     const admin = await this.prisma.admin.create({
       data: {
         name: registerDto.name,
+        mobile: registerDto.mobile,
         email: registerDto.email,
         password: hashedPassword,
         role: 'Admin',
@@ -34,7 +35,7 @@ export class AuthService {
 
     const payload = {
       sub: admin.id,
-      email: admin.email,
+      mobile: admin.mobile,
       role: admin.role,
     };
 
@@ -48,10 +49,10 @@ export class AuthService {
   }
 
   async loginAdmin(loginDto: AdminLoginDto) {
-    const { email, password } = loginDto;
+    const { mobile, password } = loginDto;
 
     const admin = await this.prisma.admin.findUnique({
-      where: { email },
+      where: { mobile },
     });
 
     if (!admin) {
@@ -65,7 +66,7 @@ export class AuthService {
 
     const payload = {
       sub: admin.id,
-      email: admin.email,
+      mobile: admin.mobile,
       role: admin.role,
     };
 

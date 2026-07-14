@@ -3,16 +3,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-blue-50: #eef4fa;
-  --color-blue-100: #d9e6f5;
-  --color-blue-200: #b3cde8;
-  --color-blue-300: #80afd9;
-  --color-blue-400: #4d8fc9;
-  --color-blue-500: #1D6FB9;
-  --color-blue-600: #1D6FB9;
-  --color-blue-700: #165a94;
-  --color-primary: #1D6FB9;
-  --color-primary-dark: #165a94;
+  --color-red-50: #fff7e8;
+  --color-red-100: #ffe7ad;
+  --color-red-500: #9f0100;
+  --color-red-600: #9f0100;
+  --color-red-700: #7a0000;
+  --color-primary: #7a0000;
+  --color-primary-dark: #5c0000;
   --font-tamil: "Noto Sans Tamil", sans-serif;
 }
 
@@ -20,28 +17,36 @@
   * {
     box-sizing: border-box;
   }
+
   body {
     font-family: "Noto Sans Tamil", sans-serif;
     background-color: #f0f4f8;
     color: #1a2332;
   }
-  input, textarea, select {
+
+  input,
+  textarea,
+  select {
     pointer-events: auto !important;
     user-select: text !important;
     -webkit-user-select: text !important;
     touch-action: manipulation;
   }
+
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
+
   ::-webkit-scrollbar-track {
     background: #f3f4f6;
   }
+
   ::-webkit-scrollbar-thumb {
     background: #d1d5db;
     border-radius: 9999px;
   }
+
   ::-webkit-scrollbar-thumb:hover {
     background: #9ca3af;
   }
@@ -60,31 +65,43 @@
     cursor: pointer;
     width: 100%;
   }
+
   .sidebar-link-active {
-    background-color: #1D6FB9;
+    background-color: #7a0000;
     color: #ffffff;
-    box-shadow: 0 4px 14px rgba(29, 111, 185, 0.35);
+    box-shadow: 0 4px 14px rgba(122, 0, 0, 0.35);
   }
+
   .sidebar-link-inactive {
     color: #4b5563;
   }
+
   .sidebar-link-inactive:hover {
-    background-color: #eef4fa;
-    color: #1D6FB9;
+    background-color: #fff7e8;
+    color: #7a0000;
   }
+
   .card {
     background-color: #ffffff;
     border-radius: 1rem;
     border: 1px solid #e5e7eb;
-    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.05);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
   }
 }
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 .animate-fadeIn {
   animation: fadeIn 0.25s ease-out;
 }

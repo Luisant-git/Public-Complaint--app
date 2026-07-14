@@ -28,7 +28,7 @@ export default function WebLayout({ children }) {
             <div className="grid h-14 w-14 place-items-center rounded-2xl bg-white shadow-sm overflow-hidden">
               <img src="/icons/tvk.jfif" alt="TVK logo" className="h-10 w-10 object-contain" />
             </div>
-            <span className="text-lg font-extrabold" style={{ color: "#1D6FB9" }}>நிர்வாகம்</span>
+            <span className="text-lg font-extrabold" style={{ color: "#7a0000" }}>நிர்வாகம்</span>
           </div>
           {/* Mobile: close button inside sidebar */}
           <button onClick={() => setSidebarOpen(false)} aria-label="Close sidebar" className="md:hidden absolute top-3 right-3 text-gray-500 hover:text-gray-700 p-2 rounded-lg">
@@ -54,7 +54,7 @@ export default function WebLayout({ children }) {
         <div className="p-3 border-t" style={{ borderColor: "#e5e7eb" }}>
           {user && (
             <div className="flex items-center gap-2 px-2 mb-2">
-              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ backgroundColor: "#1D6FB9" }}>
+              <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ backgroundColor: "#7a0000" }}>
                 {user.name?.charAt(0)}
               </div>
               <div className="text-sm font-semibold truncate" style={{ color: "#1a2332" }}>{user.name}</div>
@@ -80,25 +80,25 @@ export default function WebLayout({ children }) {
           <div className="flex-1 max-w-sm">
             <div className="relative">
               <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-              <input placeholder="தேடுக..." className="w-full border rounded-xl pl-9 pr-4 py-2 text-sm focus:outline-none focus:ring-2 transition-all" style={{ borderColor: "#e5e7eb", backgroundColor: "#f9fafb" }} />
+              <input placeholder="தேடுக..." className="w-full border rounded-xl pl-9 pr-4 py-2 text-sm focus:outline-none focus:ring-2 transition-all" style={{ borderColor: "#e5e7eb", backgroundColor: "#f9fafb", "--tw-ring-color": "#7a0000" }} />
             </div>
           </div>
 
           <div className="flex items-center gap-3 ml-auto">
             <button className="relative text-gray-400 hover:text-gray-700 p-2 rounded-xl hover:bg-gray-50">
               <Bell size={20} />
-              <span className="absolute top-1 right-1 w-2 h-2 rounded-full" style={{ backgroundColor: "#1D6FB9" }} />
+              <span className="absolute top-1 right-1 w-2 h-2 rounded-full" style={{ backgroundColor: "#7a0000" }} />
             </button>
 
             <div className="relative">
               <button onClick={() => setShowUserMenu(p => !p)}
                 className="flex items-center gap-2 bg-gray-50 hover:bg-gray-100 rounded-xl px-3 py-2 transition-colors">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ backgroundColor: "#1D6FB9" }}>
+                <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold" style={{ backgroundColor: "#7a0000" }}>
                   {user?.name?.charAt(0)}
                 </div>
                 <div className="text-left hidden sm:block">
                   <div className="text-sm font-semibold leading-tight" style={{ color: "#1a2332" }}>{user?.name}</div>
-                  <div className="text-xs" style={{ color: "#1D6FB9" }}>{user?.role}</div>
+                  <div className="text-xs" style={{ color: "#7a0000" }}>{user?.role}</div>
                 </div>
                 <ChevronDown size={14} className="text-gray-400" />
               </button>

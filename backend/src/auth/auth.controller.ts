@@ -24,7 +24,7 @@ export class AuthController {
 
   @Post('admin/login')
   @HttpCode(HttpStatus.OK)
-  @ApiOperation({ summary: 'Admin login with email and password' })
+  @ApiOperation({ summary: 'Admin login with mobile number and password' })
   @ApiBody({ type: AdminLoginDto })
   loginAdmin(@Body() body: AdminLoginDto) {
     return this.authService.loginAdmin(body);

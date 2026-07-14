@@ -66,7 +66,7 @@ export default function Dashboard() {
   if (loading) {
     return (
       <div className="flex h-[60vh] items-center justify-center">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-sky-600"></div>
+        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-red-700"></div>
       </div>
     );
   }
@@ -81,16 +81,13 @@ export default function Dashboard() {
             {new Date().toLocaleDateString("ta-IN", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
           </p>
         </div>
-        <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-white shadow-sm border" style={{ borderColor: "#e5e7eb" }}>
-          <MapPin size={16} style={{ color: "#1D6FB9" }} />
-          <span className="text-sm font-semibold" style={{ color: "#1D6FB9" }}>தமிழ்நாடு அரசு</span>
-        </div>
+        
       </div>
 
       {/* Main Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
         {[
-          { icon: MessageSquare, label: "மொத்த குறைகள்", value: stats.total, color: "#1D6FB9", bgColor: "#eef4fa", change: "மொத்தம்" },
+          { icon: MessageSquare, label: "மொத்த குறைகள்", value: stats.total, color: "#7a0000", bgColor: "#fff7e8", change: "மொத்தம்" },
           { icon: Clock, label: "பரிசீலனையில்", value: stats.pending, color: "#d97706", bgColor: "#fffbeb", change: "நிலுவை" },
           { icon: AlertTriangle, label: "நடவடிக்கை எடுக்கப்பட்டது", value: stats.action, color: "#2563eb", bgColor: "#eff6ff", change: "நடவடிக்கை" },
           { icon: CheckCircle, label: "தீர்க்கப்பட்டது", value: stats.resolved, color: "#16a34a", bgColor: "#f0fdf4", change: "தீர்க்கப்பட்டது" },
@@ -149,10 +146,10 @@ export default function Dashboard() {
                   <div className="flex-1">
                     <div className="flex justify-between items-center mb-1">
                       <span className="text-xs font-medium text-gray-600">{t.type}</span>
-                      <span className="text-xs font-bold" style={{ color: "#1D6FB9" }}>{t.count}</span>
+                      <span className="text-xs font-bold" style={{ color: "#7a0000" }}>{t.count}</span>
                     </div>
-                    <div className="w-full h-2 rounded-full" style={{ backgroundColor: "#eef4fa" }}>
-                      <div className="h-2 rounded-full" style={{ width: `${pct}%`, backgroundColor: "#1D6FB9" }} />
+                    <div className="w-full h-2 rounded-full" style={{ backgroundColor: "#fff7e8" }}>
+                      <div className="h-2 rounded-full" style={{ width: `${pct}%`, backgroundColor: "#7a0000" }} />
                     </div>
                   </div>
                 </div>
@@ -164,15 +161,15 @@ export default function Dashboard() {
 
       {/* Recent Complaints - Mobile Cards + Desktop Table */}
       <div className="bg-white rounded-2xl border shadow-lg overflow-hidden" style={{ borderColor: "#e5e7eb" }}>
-        <div className="px-4 sm:px-8 py-4 sm:py-5 border-b flex flex-col sm:flex-row sm:items-center justify-between gap-3" style={{ borderColor: "#e5e7eb", backgroundColor: "#f8fafc" }}>
+        <div className="px-4 sm:px-8 py-4 sm:py-5 border-b flex flex-col sm:flex-row sm:items-center justify-between gap-3" style={{ borderColor: "#e5e7eb", backgroundColor: "#fff7e8" }}>
           <div className="flex items-center gap-3">
-            <div className="w-2 h-8 rounded-full" style={{ backgroundColor: "#1D6FB9" }} />
+            <div className="w-2 h-8 rounded-full" style={{ backgroundColor: "#7a0000" }} />
             <div>
               <h2 className="text-base font-bold" style={{ color: "#1a2332" }}>சமீபத்திய குறைகள்</h2>
               <p className="text-xs text-gray-400 mt-0.5">சமீபத்தில் பதிவு செய்யப்பட்ட குறைகள்</p>
             </div>
           </div>
-          <button onClick={() => navigate("/complaints")} className="text-xs font-semibold px-4 py-2 rounded-lg transition-all hover:shadow-md flex items-center gap-1 w-fit" style={{ color: "#1D6FB9", backgroundColor: "#eef4fa", border: "1px solid #d9e6f5" }}>
+          <button onClick={() => navigate("/complaints")} className="text-xs font-semibold px-4 py-2 rounded-lg transition-all hover:shadow-md flex items-center gap-1 w-fit" style={{ color: "#7a0000", backgroundColor: "#fff7e8", border: "1px solid #ffe7ad" }}>
             அனைத்தும் பார்க்க <span className="text-sm">→</span>
           </button>
         </div>
@@ -190,7 +187,7 @@ export default function Dashboard() {
                 <div key={c.id} onClick={() => navigate("/complaints")} className="p-4 bg-white border rounded-2xl shadow-sm cursor-pointer" style={{ borderColor: "#e5e7eb" }}>
                   {/* Complaint number first */}
                   <div className="flex items-center justify-between gap-2">
-                    <div className="font-mono text-xs font-bold" style={{ color: "#1D6FB9" }}>{c.number}</div>
+                    <div className="font-mono text-xs font-bold" style={{ color: "#7a0000" }}>{c.number}</div>
                     <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold whitespace-nowrap ${cfg.bg} ${cfg.text}`}>
                       {cfg.shortLabel}
                     </span>
@@ -232,7 +229,7 @@ export default function Dashboard() {
                 return (
                   <tr key={c.id} onClick={() => navigate("/complaints")} className="hover:bg-gray-50/60 transition-all cursor-pointer">
                     <td className="px-6 sm:px-8 py-4">
-                      <span className="text-sm font-mono font-semibold" style={{ color: "#1D6FB9" }}>{c.number}</span>
+                      <span className="text-sm font-mono font-semibold" style={{ color: "#7a0000" }}>{c.number}</span>
                     </td>
                     <td className="px-6 sm:px-8 py-4">
                       <div>
