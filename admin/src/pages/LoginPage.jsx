@@ -43,7 +43,7 @@ export default function LoginPage() {
         {/* Login Card - cleaner with less padding */}
         <div className="rounded-2xl bg-white px-7 py-8 shadow-lg border" style={{ borderColor: "#e5e7eb" }}>
           <h2 className="text-lg font-bold text-center mb-1" style={{ color: "#1a2332" }}></h2>
-          <p className="text-gray-400 text-xs text-center mb-7">உங்கள் கணக்கில் உள்நுழையவும்</p>
+          <p className="text-black text-xs text-center mb-7 font-bold">உங்கள் கணக்கில் உள்நுழையவும்</p>
 
           <form onSubmit={handleLogin} className="space-y-4.5">
             <div>
