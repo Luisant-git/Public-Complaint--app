@@ -67,6 +67,7 @@ export class ComplaintService {
     if (search) {
       where.OR = [
         { number: { contains: search, mode: 'insensitive' } },
+        { type: { contains: search, mode: 'insensitive' } },
         { description: { contains: search, mode: 'insensitive' } },
         { location: { contains: search, mode: 'insensitive' } },
         {

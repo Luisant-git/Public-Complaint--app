@@ -111,13 +111,28 @@ export default function ComplaintManagement() {
   const loadComplaints = async () => {
     try {
       setLoading(true);
-      const data = await complaintsApi.getComplaints({
+      // If admin selected the localized "மற்றவை" (Other) filter, we need to
+      // fetch without a type filter and then client-side filter to complaints
+      // whose `type` is not one of the known categories. This lets custom
+      // types submitted from the public app (free-text) appear under Other.
+      const apiFilters = {
         status: statusFilter,
-        type: typeFilter,
-        search: search,
+        search,
         fromDate,
         toDate,
-      });
+      };
+      // Only send `type` to API when it's not the localized "Other" value
+      if (typeFilter && typeFilter !== "மற்றவை" && typeFilter !== "All") {
+        apiFilters.type = typeFilter;
+      }
+
+      let data = await complaintsApi.getComplaints(apiFilters);
+
+      // If admin asked for 'மற்றவை', show complaints with types outside known list
+      if (typeFilter === "மற்றவை") {
+        const known = COMPLAINT_TYPES.filter(t => t !== "All" && t !== "மற்றவை");
+        data = data.filter((c) => !known.includes(c.type));
+      }
       setComplaints(data);
       setCurrentPage(1);
     } catch (err) {
