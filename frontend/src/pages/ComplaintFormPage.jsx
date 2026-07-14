@@ -19,6 +19,7 @@ export function ComplaintFormPage() {
   const [images, setImages] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const isOther = type.id === "other";
 
   const onInvalid = () => toast.error("தேவையான விவரங்களை நிரப்பவும்.");
   const onSubmit = async (values) => {
@@ -28,7 +29,8 @@ export function ComplaintFormPage() {
     const uploadedUrls = await Promise.all(
       images.map((img) => uploadImage(img.file))
     );
-    const complaint = await submitComplaint({ ...values, images: uploadedUrls }, type.name);
+    const selectedType = isOther ? (values.customType || type.name) : type.name;
+    const complaint = await submitComplaint({ ...values, images: uploadedUrls }, selectedType);
     setIsSubmitting(false);
     toast.success(isOnline ? "உங்கள் குறை பதிவு செய்யப்பட்டது." : "இணையம் கிடைத்ததும் குறை அனுப்பப்படும்.");
     navigate(`/success/${complaint.number}`, { replace: true });
@@ -37,6 +39,18 @@ export function ComplaintFormPage() {
   const Icon = type.Icon;
   return <main className="min-h-dvh bg-white pb-8"><Header title="குறை விவரங்கள்" back action="none" /><form className="page-enter px-4 pb-4 pt-5" onSubmit={handleSubmit(onSubmit, onInvalid)} noValidate><div className="flex items-center gap-3 rounded-2xl bg-government-50 px-3.5 py-3"><span className={`grid h-10 w-10 place-items-center rounded-xl ${type.color} text-white`}><Icon className="h-5 w-5" /></span><div><p className="text-[10px] font-bold text-government-700">தேர்ந்தெடுத்த குறை வகை</p><p className="mt-0.5 text-[13px] font-extrabold text-slate-700">{type.name}</p></div></div>
     <div className="mt-6 space-y-5">
+      {isOther && (
+        <label className="block">
+          <span className="mb-2 block text-[13px] font-bold text-slate-700">குறை வகை</span>
+          <input
+            type="text"
+            placeholder="குறை வகையை இங்கு உள்ளிடவும்"
+            className={`w-full rounded-xl border bg-white px-3.5 py-3 text-sm font-medium text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-government-500 focus:ring-4 focus:ring-government-100 ${errors.customType ? "border-rose-400" : "border-slate-200"}`}
+            {...register("customType", { required: "குறை வகையை உள்ளிடவும்.", minLength: { value: 3, message: "அதிகப்படியான விவரம் (குறைந்தது 3 எழுத்துகள்)." } })}
+          />
+          {errors.customType && <span className="mt-1.5 block text-xs font-medium text-rose-600">{errors.customType.message}</span>}
+        </label>
+      )}
       <label className="block">
         <span className="mb-2 block text-[13px] font-bold text-slate-700">இடம்</span>
         <input

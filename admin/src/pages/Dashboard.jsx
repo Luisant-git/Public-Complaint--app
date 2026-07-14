@@ -50,9 +50,20 @@ export default function Dashboard() {
   // stored on each complaint.
   const typeStats = useMemo(() => {
     const byType = stats.byType || {};
-    return COMPLAINT_CATEGORIES
-      .map((type) => ({ type, count: byType[type] || 0 }))
-      .sort((a, b) => b.count - a.count);
+    const known = COMPLAINT_CATEGORIES.filter(t => t !== "மற்றவை");
+
+    // Build entries for known categories
+    const entries = known.map((type) => ({ type, count: byType[type] || 0 }));
+
+    // Calculate 'மற்றவை' as sum of counts for any types not in known list
+    const otherCount = Object.keys(byType).reduce((acc, key) => {
+      if (!known.includes(key)) acc += byType[key] || 0;
+      return acc;
+    }, 0);
+
+    entries.push({ type: "மற்றவை", count: otherCount });
+
+    return entries.sort((a, b) => b.count - a.count);
   }, [stats.byType]);
 
   const statusCounts = [
