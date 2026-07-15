@@ -12,7 +12,6 @@ export class WebhookController {
   @ApiOperation({ summary: 'Submit a new complaint from WhatsApp bot without auth' })
   @ApiBody({ type: CreateComplaintDto })
   createFromWhatsapp(@Body() body: CreateComplaintDto) {
-    // Assuming 1 is the default admin/system user id
-    return this.complaintService.create(body, 1);
+    return this.complaintService.createFromWebhook(body);
   }
 }

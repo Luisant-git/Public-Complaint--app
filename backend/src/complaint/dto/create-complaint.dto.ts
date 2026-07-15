@@ -36,4 +36,20 @@ export class CreateComplaintDto {
   @IsString({ each: true })
   @IsOptional()
   images?: string[];
+
+  @ApiPropertyOptional({
+    description: 'WhatsApp profile name of the user',
+    example: 'Ragul V',
+  })
+  @IsString()
+  @IsOptional()
+  name?: string;
+
+  @ApiPropertyOptional({
+    description: 'WhatsApp phone number of the user',
+    example: '919360999351',
+  })
+  @IsString()
+  @IsOptional()
+  phone?: string;
 }
