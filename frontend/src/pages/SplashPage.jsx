@@ -12,7 +12,7 @@ const grpImg = "/assests/grppic.png";
   const navigate = useNavigate();
   useEffect(() => {
     const destination = localStorage.getItem("complaint_token") ? "/dashboard" : "/login";
-    const timeout = window.setTimeout(() => navigate(destination, { replace: true }), 10000);
+    const timeout = window.setTimeout(() => navigate(destination, { replace: true }), 5000);
     return () => window.clearTimeout(timeout);
   }, [navigate]);
 
