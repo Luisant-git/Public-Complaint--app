@@ -12,7 +12,7 @@ export function Header({ title, back = false, action = "notification" }) {
           </button>
         )}
         <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-full border-3 border-white bg-white shadow-sm">
-          <img src="/assests/2.jfif" alt="TVK logo" className="h-full w-full object-cover" />
+          <img src="/assests/arun.png" alt="TVK logo" className="h-full w-full object-cover" />
         </div>
       </div>
 
