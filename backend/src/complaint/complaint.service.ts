@@ -53,6 +53,40 @@ export class ComplaintService {
     });
   }
 
+  async createFromWebhook(createComplaintDto: CreateComplaintDto) {
+    const phone = createComplaintDto.phone;
+    let user;
+    if (phone) {
+      user = await this.prisma.user.findUnique({
+        where: { mobile: phone }
+      });
+      if (!user) {
+        user = await this.prisma.user.create({
+          data: {
+            name: createComplaintDto.name || 'WhatsApp User',
+            mobile: phone
+          }
+        });
+      }
+    }
+
+    const number = await this.generateComplaintNumber();
+
+    return this.prisma.complaint.create({
+      data: {
+        number,
+        type: createComplaintDto.type,
+        description: createComplaintDto.description,
+        location: createComplaintDto.location,
+        images: createComplaintDto.images ? JSON.stringify(createComplaintDto.images) : null,
+        userId: user ? user.id : 1, // fallback to admin user if no phone provided
+      },
+      include: {
+        user: true,
+      },
+    });
+  }
+
   async findAll(status?: string, type?: string, search?: string, fromDate?: string, toDate?: string) {
     const where: any = {};
 
