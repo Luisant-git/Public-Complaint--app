@@ -8,11 +8,11 @@ const topImg = "/assests/tvk.jfif";
 const grpImg = "/assests/grppic.png";
 
 
-export function SplashPage() {
+  export function SplashPage() {
   const navigate = useNavigate();
   useEffect(() => {
     const destination = localStorage.getItem("complaint_token") ? "/dashboard" : "/login";
-    const timeout = window.setTimeout(() => navigate(destination, { replace: true }), 5000);
+    const timeout = window.setTimeout(() => navigate(destination, { replace: true }), 10000);
     return () => window.clearTimeout(timeout);
   }, [navigate]);
 
@@ -24,13 +24,15 @@ export function SplashPage() {
         <div className="relative float-gently w-full max-w-full px-4 md:max-w-[420px]">
           <div className="flex flex-col items-center gap-6">
             <img src={grpImg} alt="Group" className="mx-auto h-48 w-64 object-contain drop-shadow-2xl" />
-            <img src={topImg} alt="Splash illustration" className="mx-auto h-44 w-44 rounded-2xl object-cover shadow-xl mt-2" />
             <div className="flex items-center justify-center gap-4">
-              <div className="w-32 h-32 bg-white/90 rounded-full shadow-lg overflow-hidden border-2 border-white/50">
-                <img src={topLeftImg} alt="Top left" className="object-contain w-full h-full scale-110" />
-              </div>
-              <div className="w-28 h-28 bg-white/90 rounded-full shadow-lg overflow-hidden border-2 border-white/50">
+              <img src={topImg} alt="Splash illustration" className="h-44 w-56 rounded-2xl object-cover shadow-xl" />
+              <div className="w-20 h-20 bg-white/90 rounded-full shadow-lg overflow-hidden border-2 border-white/50">
                 <img src={topRightImg} alt="Top right" className="object-contain w-full h-full" />
+              </div>
+            </div>
+            <div className="flex items-center justify-center">
+              <div className="w-44 h-44 bg-white/90 rounded-full shadow-lg overflow-hidden border-2 border-white/50">
+                <img src={topLeftImg} alt="Top left" className="object-contain w-full h-full scale-125" />
               </div>
             </div>
             <div className="flex items-center justify-center w-20 h-20 bg-white/90 rounded-full shadow-md p-1 overflow-hidden border border-white/30">
